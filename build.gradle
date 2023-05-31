@@ -2,20 +2,25 @@
 
 buildscript {
 
-  ext.android_version = '8.0.2'
-  ext.kotlin_version = '1.8.20'
-  ext.hilt_version = '2.44'
-  ext.nav_version ='2.5.3'
-  ext.core_ktx ='1.10.1'
-  ext.app_compat ='1.6.1'
-  ext.google_material ='1.9.0'
-  ext.constraint_layout = '2.1.4'
-  ext.junit = '4.13.2'
-  ext.junit_test='1.1.5'
-  ext.retrofit ='2.9.0'
-  ext.esspresso = '3.5.1'
-  ext.okhttp_interceptor='4.11.0'
-  ext.room_version ='2.5.1'
+  ext {
+    commonLibraries = [
+    ]
+
+    ext.android_version = '8.0.2'
+    ext.kotlin_version = '1.8.20'
+    ext.hilt_version = '2.44'
+    ext.nav_version = '2.5.3'
+    ext.core_ktx = '1.10.1'
+    ext.app_compat = '1.6.1'
+    ext.google_material = '1.9.0'
+    ext.constraint_layout = '2.1.4'
+    ext.junit = '4.13.2'
+    ext.junit_test = '1.1.5'
+    ext.retrofit = '2.9.0'
+    ext.esspresso = '3.5.1'
+    ext.okhttp_interceptor = '4.11.0'
+    ext.room_version = '2.5.1'
+  }
 
   repositories {
     google()

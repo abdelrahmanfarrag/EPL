@@ -2,6 +2,8 @@ plugins {
   id 'com.android.library'
   id 'org.jetbrains.kotlin.android'
   id 'kotlin-kapt'
+  id 'com.google.dagger.hilt.android'
+
 }
 
 android {
@@ -44,5 +46,21 @@ dependencies {
   annotationProcessor "androidx.room:room-compiler:$room_version"
   kapt "androidx.room:room-compiler:$room_version"
 
+  //Testing
+  testImplementation "junit:junit:$junit"
+  androidTestImplementation "androidx.test.ext:junit:$junit_test"
+  androidTestImplementation "androidx.test.espresso:espresso-core:$esspresso"
+  testImplementation "org.mockito.kotlin:mockito-kotlin:4.1.0"
+  testImplementation 'org.mockito:mockito-inline:2.21.0'
+  testImplementation 'androidx.arch.core:core-testing:2.2.0'
+  testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1'
+  //Hilt
+  implementation "com.google.dagger:hilt-android:$hilt_version"
+  kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+
   implementation project(':domain')
+}
+kapt {
+  correctErrorTypes true
 }
