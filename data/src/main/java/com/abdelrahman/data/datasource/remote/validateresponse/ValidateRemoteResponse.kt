@@ -6,9 +6,8 @@ import com.abdelrahman.data.datasource.remote.RemoteResponseState.NoInternetConn
 import com.abdelrahman.data.datasource.remote.RemoteResponseState.NotAuthorized
 import com.abdelrahman.data.datasource.remote.RemoteResponseState.NotValidResponse
 import com.abdelrahman.data.datasource.remote.RemoteResponseState.ValidResponse
-import com.abdelrahman.data.datasource.remote.internetinterceptor.INetworkDetector
+import com.abdelrahman.data.datasource.remote.networkdetector.INetworkDetector
 import com.google.gson.Gson
-import com.google.gson.JsonParseException
 import retrofit2.Response
 import javax.inject.Inject
 

@@ -1,4 +1,4 @@
-package com.abdelrahman.data.datasource.remote.internetinterceptor
+package com.abdelrahman.data.datasource.remote.networkdetector
 
 /**
  * Authored by Abdelrahman Ahmed on 31 May, 2023.

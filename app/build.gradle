@@ -1,6 +1,9 @@
 plugins {
   id 'com.android.application'
   id 'org.jetbrains.kotlin.android'
+  id 'kotlin-kapt'
+  id 'com.google.dagger.hilt.android'
+
 }
 
 android {
@@ -33,7 +36,14 @@ android {
 }
 
 dependencies {
+  implementation "com.google.dagger:hilt-android:$hilt_version"
+  kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
   implementation project(':data')
   implementation project(':domain')
   implementation project(':presentation')
+}
+
+kapt {
+  correctErrorTypes true
 }

@@ -1,11 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-
-  ext {
-    commonLibraries = [
-    ]
-
     ext.android_version = '8.0.2'
     ext.kotlin_version = '1.8.20'
     ext.hilt_version = '2.44'
@@ -20,8 +15,6 @@ buildscript {
     ext.esspresso = '3.5.1'
     ext.okhttp_interceptor = '4.11.0'
     ext.room_version = '2.5.1'
-  }
-
   repositories {
     google()
   }

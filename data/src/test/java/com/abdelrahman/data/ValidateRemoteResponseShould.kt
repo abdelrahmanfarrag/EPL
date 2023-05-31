@@ -1,16 +1,16 @@
 package com.abdelrahman.data
 
 import com.abdelrahman.data.datasource.remote.RemoteResponseState
-import com.abdelrahman.data.datasource.remote.internetinterceptor.INetworkDetector
+import com.abdelrahman.data.datasource.remote.networkdetector.INetworkDetector
 import com.abdelrahman.data.datasource.remote.validateresponse.IValidateRemoteResponse
 import com.abdelrahman.data.datasource.remote.validateresponse.ValidateRemoteResponse
 import com.google.gson.Gson
-import com.google.gson.JsonObject
 import junit.framework.TestCase.assertEquals
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Test
-import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import retrofit2.Response
 
@@ -29,6 +29,13 @@ class ValidateRemoteResponseShould {
   private val unAuthorizedErrorResponse = Response.error<Any>(401, "Error".toResponseBody())
   private val errorResponse = Response.error<Any>(500, "Error".toResponseBody())
 
+
+  @Test
+  fun `call isConnected once`() {
+    createMockedConnectedRemote()
+    validateRemoteResponse.validateRemoteResponse(successResponse)
+    verify(iNetworkDetector, times(1)).isConnected()
+  }
 
   @Test
   fun `return response status of no internet connect when no connection`() {

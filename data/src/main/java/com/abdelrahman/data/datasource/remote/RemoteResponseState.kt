@@ -7,7 +7,7 @@ package com.abdelrahman.data.datasource.remote
  */
 sealed class RemoteResponseState<out T> {
   data class ValidResponse<T>(val response: T) : RemoteResponseState<T>()
-  object NoInternetConnect : RemoteResponseState<Any>()
-  object NotAuthorized : RemoteResponseState<Any>()
-  object NotValidResponse : RemoteResponseState<Any>()
+  object NoInternetConnect : RemoteResponseState<Nothing>()
+  object NotAuthorized : RemoteResponseState<Nothing>()
+  object NotValidResponse : RemoteResponseState<Nothing>()
 }

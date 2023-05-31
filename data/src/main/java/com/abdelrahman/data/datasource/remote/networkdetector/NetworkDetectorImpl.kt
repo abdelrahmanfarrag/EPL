@@ -1,4 +1,4 @@
-package com.abdelrahman.data.datasource.remote.internetinterceptor
+package com.abdelrahman.data.datasource.remote.networkdetector
 
 import android.content.Context
 import android.net.ConnectivityManager
