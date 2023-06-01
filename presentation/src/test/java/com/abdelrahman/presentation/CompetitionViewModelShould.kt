@@ -1,19 +1,21 @@
 package com.abdelrahman.presentation
 
 import com.abdelrahman.DataState
+import com.abdelrahman.ErrorTypes
 import com.abdelrahman.ErrorTypes.GeneralError
 import com.abdelrahman.ErrorTypes.NetworkError
 import com.abdelrahman.ErrorTypes.UnAuthorized
 import com.abdelrahman.entity.Competition
-import com.abdelrahman.presentation.competition.CompetitionContract.Event
 import com.abdelrahman.presentation.competition.CompetitionViewModel
 import com.abdelrahman.usecase.competition.IFetchEPLMatchesUseCase
 import com.abdelrahman.utils.MainDispatcherRule
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withContext
+import org.junit.Rule
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
@@ -27,27 +29,22 @@ import org.mockito.kotlin.whenever
  */
 class CompetitionViewModelShould {
 
-//  @get:Rule
-//  val mainDispatcherRule = MainDispatcherRule()
+  @OptIn(ExperimentalCoroutinesApi::class)
+  @get:Rule
+  val mainDispatcherRule = MainDispatcherRule()
   private lateinit var competitionViewModel: CompetitionViewModel
   private val fetchMatchesUseCase = mock<IFetchEPLMatchesUseCase>()
   private val mockedCompetition = mock<Competition>()
 
   @Test
   fun `viewModel call fetch matches once`() = runTest {
-    whenever(fetchMatchesUseCase.fetchEPLMatches(1)).thenReturn(flow {
-      emit(DataState.SuccessState(mockedCompetition))
-    })
-    competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
+    mockSuccess()
     verify(fetchMatchesUseCase, times(1)).fetchEPLMatches(1)
   }
 
   @Test
   fun `viewModel collect success state when use case returns success`() = runTest {
-    whenever(fetchMatchesUseCase.fetchEPLMatches(1)).thenReturn(flow {
-      emit(DataState.SuccessState(mockedCompetition))
-    })
-    competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
+    mockSuccess()
     withContext(Dispatchers.IO) {
       Thread.sleep(1000)
     }
@@ -60,9 +57,7 @@ class CompetitionViewModelShould {
   @Test
   fun `viewModel collect general error state when use case returns general error state`() =
     runTest {
-      whenever(fetchMatchesUseCase.fetchEPLMatches(1)).thenReturn(flow {
-        emit(DataState.ErrorState(GeneralError))
-      })
+      mockErrorType(GeneralError)
       competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
       withContext(Dispatchers.IO) {
         Thread.sleep(1000)
@@ -76,9 +71,7 @@ class CompetitionViewModelShould {
   @Test
   fun `viewModel collect network error state when use case returns no network error state`() =
     runTest {
-      whenever(fetchMatchesUseCase.fetchEPLMatches(1)).thenReturn(flow {
-        emit(DataState.ErrorState(NetworkError))
-      })
+      mockErrorType(NetworkError)
       competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
       withContext(Dispatchers.IO) {
         Thread.sleep(1000)
@@ -92,10 +85,7 @@ class CompetitionViewModelShould {
   @Test
   fun `viewModel collect unauthorized error state when use case returns unauthorizzed error state`() =
     runTest {
-      whenever(fetchMatchesUseCase.fetchEPLMatches(1)).thenReturn(flow {
-        emit(DataState.ErrorState(UnAuthorized))
-      })
-      competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
+      mockErrorType(UnAuthorized)
       withContext(Dispatchers.IO) {
         Thread.sleep(1000)
       }
@@ -107,22 +97,17 @@ class CompetitionViewModelShould {
 
   @Test
   fun `show loader on start of requesting state from use case`() = runTest {
-    whenever(fetchMatchesUseCase.fetchEPLMatches(1)).thenReturn(flow {
-      emit(DataState.ErrorState(UnAuthorized))
-    })
-    competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
+    mockErrorType(UnAuthorized)
     assertEquals(
       true,
       competitionViewModel.currentState.isLoading
     )
   }
 
+
   @Test
-  fun `hide loader after data is collected`() = runTest {
-    whenever(fetchMatchesUseCase.fetchEPLMatches(1)).thenReturn(flow {
-      emit(DataState.ErrorState(UnAuthorized))
-    })
-    competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
+  fun `hide loader after data is collected successfully`() = runTest {
+    mockSuccess()
     withContext(Dispatchers.IO) {
       Thread.sleep(1000)
     }
@@ -130,6 +115,32 @@ class CompetitionViewModelShould {
       false,
       competitionViewModel.currentState.isLoading
     )
+  }
+
+  @Test
+  fun `hide loader after data state is not success`() = runTest {
+    mockErrorType(GeneralError)
+    withContext(Dispatchers.IO) {
+      Thread.sleep(1000)
+    }
+    assertEquals(
+      false,
+      competitionViewModel.currentState.isLoading
+    )
+  }
+
+  private suspend fun mockErrorType(errorTypes: ErrorTypes) {
+    whenever(fetchMatchesUseCase.fetchEPLMatches(1)).thenReturn(flow {
+      emit(DataState.ErrorState(errorTypes))
+    })
+    competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
+  }
+
+  private suspend fun mockSuccess() {
+    whenever(fetchMatchesUseCase.fetchEPLMatches(1)).thenReturn(flow {
+      emit(DataState.SuccessState(mockedCompetition))
+    })
+    competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
   }
 
 }
