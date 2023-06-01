@@ -17,7 +17,6 @@ class NetworkDetectorImpl @Inject constructor(private val mContext: Context) :
     return checkNetworkState()
   }
 
-
   private fun checkNetworkState(): Boolean {
     val connectivityManager = createConnectivityManager()
     val network = connectivityManager.activeNetwork

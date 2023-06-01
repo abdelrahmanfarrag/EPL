@@ -14,7 +14,7 @@ object Constants {
   }
 
   object ENDPOINTS {
-    const val MATCHES = "competitions/${COMPETITION_ID}/matches"
+    const val MATCHES = "competitions/{$COMPETITION_ID}/matches"
 
   }
 
@@ -27,5 +27,6 @@ object Constants {
     const val TOKEN_HEADER = "X-Auth-Token"
   }
 
+  const val SUCCESS_CODE = 200
   const val UNAUTHORIZED_ERROR_CODE = 403
 }

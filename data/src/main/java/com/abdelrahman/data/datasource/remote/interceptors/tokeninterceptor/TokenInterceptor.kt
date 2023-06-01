@@ -15,7 +15,7 @@ class TokenInterceptor @Inject constructor(): ITokenInterceptor {
   override fun intercept(chain: Chain): Response {
     val request = chain.request()
     val builder = request.newBuilder()
-    builder.addHeader(TOKEN_HEADER,"")
+    builder.addHeader(TOKEN_HEADER,"9d97c6598abc41aca3fa6c665bb4f3ec")
     return chain.proceed(builder.build())
   }
 

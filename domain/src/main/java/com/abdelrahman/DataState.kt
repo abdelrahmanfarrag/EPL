@@ -7,5 +7,6 @@ package com.abdelrahman
  */
 sealed class DataState<out T> {
   data class SuccessState<T>(val data: T) : DataState<T>()
-  data class ErrorState(val errorTypes: ErrorTypes) : DataState<Nothing>()
+  data class ErrorState(val errorTypes: ErrorTypes, val message: String? = null) :
+    DataState<Nothing>()
 }

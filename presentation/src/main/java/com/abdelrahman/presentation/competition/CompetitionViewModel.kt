@@ -6,8 +6,6 @@ import com.abdelrahman.presentation.competition.CompetitionContract.Event
 import com.abdelrahman.presentation.competition.CompetitionContract.State
 import com.abdelrahman.usecase.competition.IFetchEPLMatchesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -31,7 +29,6 @@ class CompetitionViewModel @Inject constructor(private val iFetchEPLMatchesUseCa
   }
 
   override fun onExceptionThrown() {
-    TODO("Not yet implemented")
   }
 
   override fun handleEvent(event: Event) {
@@ -49,10 +46,8 @@ class CompetitionViewModel @Inject constructor(private val iFetchEPLMatchesUseCa
   }
 
   private fun getMatches() {
-    viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { exception, throwable ->
-
-    }) {
-      iFetchEPLMatchesUseCase.fetchEPLMatches(1).onStart {
+    viewModelScope.launch {
+      iFetchEPLMatchesUseCase.fetchEPLMatches(2021).onStart {
         toggleLoading(true)
       }.onCompletion {
         toggleLoading(false)
@@ -65,4 +60,5 @@ class CompetitionViewModel @Inject constructor(private val iFetchEPLMatchesUseCa
       }
     }
   }
+
 }

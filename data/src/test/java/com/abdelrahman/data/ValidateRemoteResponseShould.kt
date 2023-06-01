@@ -1,17 +1,15 @@
 package com.abdelrahman.data
 
+import com.abdelrahman.data.datasource.remote.Constants.UNAUTHORIZED_ERROR_CODE
 import com.abdelrahman.data.datasource.remote.RemoteResponseState
-import com.abdelrahman.data.datasource.remote.networkdetector.INetworkDetector
 import com.abdelrahman.data.datasource.remote.validateresponse.IValidateRemoteResponse
 import com.abdelrahman.data.datasource.remote.validateresponse.ValidateRemoteResponse
+import com.abdelrahman.models.ErrorResponse
 import com.google.gson.Gson
 import junit.framework.TestCase.assertEquals
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Test
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.times
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
 import retrofit2.Response
 
 /**
@@ -23,41 +21,32 @@ class ValidateRemoteResponseShould {
 
   private lateinit var validateRemoteResponse: IValidateRemoteResponse
   private val gson = mock<Gson>()
-  private val iNetworkDetector = mock<INetworkDetector>()
-  private val expectedNoNetwork = RemoteResponseState.NoInternetConnect
-  private val successResponse = Response.success(null)
-  private val unAuthorizedErrorResponse = Response.error<Any>(403, "Error".toResponseBody())
-  private val errorResponse = Response.error<Any>(500, "Error".toResponseBody())
-
+  private val successResponse = Response.success("")
+  private val unAuthorizedErrorResponse =
+    Response.error<ErrorResponse>(UNAUTHORIZED_ERROR_CODE, "".toResponseBody())
+  private val serverErrorResponse = Response.error<ErrorResponse>(500, "".toResponseBody())
 
   @Test
-  fun `call isConnected once`() {
-    createMockedConnectedRemote()
-    validateRemoteResponse.validateRemoteResponse(successResponse)
-    verify(iNetworkDetector, times(1)).isConnected()
-  }
-
-  @Test
-  fun `return response status of no internet connect when no connection`() {
-    createMockedNotConnectedRemote()
+  fun `return error `() {
+    validateRemoteResponse = ValidateRemoteResponse(gson)
     assertEquals(
-      expectedNoNetwork,
-      validateRemoteResponse.validateRemoteResponse(Response.success(Any()))
+      RemoteResponseState.RemoteErrorResponse<ErrorResponse>(""),
+      validateRemoteResponse.validateRemoteResponse(serverErrorResponse)
     )
   }
 
   @Test
-  fun `return response status of valid when internet is connected`() {
-    createMockedConnectedRemote()
+  fun `return not valid response in case of response is null`() {
+    validateRemoteResponse = ValidateRemoteResponse(gson)
     assertEquals(
-      RemoteResponseState.ValidResponse(null),
-      validateRemoteResponse.validateRemoteResponse(successResponse)
+      RemoteResponseState.NotValidResponse,
+      validateRemoteResponse.validateRemoteResponse<Nothing>(null)
     )
   }
 
   @Test
-  fun `return unauthorized status when status code is 401`() {
-    createMockedConnectedRemote()
+  fun `return unauthorized state in case of code is unauthorized code`() {
+    validateRemoteResponse = ValidateRemoteResponse(gson)
     assertEquals(
       RemoteResponseState.NotAuthorized,
       validateRemoteResponse.validateRemoteResponse(unAuthorizedErrorResponse)
@@ -65,31 +54,11 @@ class ValidateRemoteResponseShould {
   }
 
   @Test
-  fun `return unauthorized status when status code is not 401 or 200`() {
-    createMockedConnectedRemote()
+  fun `return valid response in case of response is success`() {
+    validateRemoteResponse = ValidateRemoteResponse(gson)
     assertEquals(
-      RemoteResponseState.NotValidResponse,
-      validateRemoteResponse.validateRemoteResponse(errorResponse)
+      RemoteResponseState.ValidResponse(""),
+      validateRemoteResponse.validateRemoteResponse(successResponse)
     )
-  }
-
-  @Test
-  fun `return not valid status when response is null`() {
-    createMockedConnectedRemote()
-    assertEquals(
-      RemoteResponseState.NotValidResponse,
-      validateRemoteResponse.validateRemoteResponse<Any>(null)
-    )
-  }
-
-  private fun createMockedNotConnectedRemote() {
-    whenever(iNetworkDetector.isConnected()).thenReturn(false)
-    validateRemoteResponse = ValidateRemoteResponse(gson, iNetworkDetector)
-
-  }
-
-  private fun createMockedConnectedRemote() {
-    whenever(iNetworkDetector.isConnected()).thenReturn(true)
-    validateRemoteResponse = ValidateRemoteResponse(gson, iNetworkDetector)
   }
 }

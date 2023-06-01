@@ -30,26 +30,20 @@ class DataModule {
 
   @Provides
   @ViewModelScoped
-  fun providesINetworkDetector(context: Context): INetworkDetector {
-    return NetworkDetectorImpl(context)
-  }
-
-  @Provides
-  @ViewModelScoped
   fun providesValidateRemoteResponse(
-    gson: Gson,
-    iNetworkDetector: INetworkDetector
+    gson: Gson
   ): IValidateRemoteResponse {
-    return ValidateRemoteResponse(gson, iNetworkDetector)
+    return ValidateRemoteResponse(gson)
   }
 
   @Provides
   @ViewModelScoped
   fun providesRemoteDataSource(
     api: API,
-    iValidateRemoteResponse: IValidateRemoteResponse
+    iValidateRemoteResponse: IValidateRemoteResponse,
+    iNetworkDetector: INetworkDetector
   ): IRemoteDataSource {
-    return RemoteDataSource(iValidateRemoteResponse, api)
+    return RemoteDataSource(iValidateRemoteResponse, iNetworkDetector, api)
   }
 
   @Provides

@@ -2,6 +2,7 @@ package com.abdelrahman.data.datasource.remote.datasource.apidatasource
 
 import com.abdelrahman.data.datasource.remote.API
 import com.abdelrahman.data.datasource.remote.RemoteResponseState
+import com.abdelrahman.data.datasource.remote.networkdetector.INetworkDetector
 import com.abdelrahman.models.Competition
 import com.abdelrahman.data.datasource.remote.validateresponse.IValidateRemoteResponse
 import javax.inject.Inject
@@ -13,10 +14,14 @@ import javax.inject.Inject
  */
 class RemoteDataSource @Inject constructor(
   private val iValidateRemoteResponse: IValidateRemoteResponse,
+  private val iNetworkDetector: INetworkDetector,
   private val api: API
 ) : IRemoteDataSource {
 
   override suspend fun getCompetitionMatches(id: Int): RemoteResponseState<Competition> {
-    return iValidateRemoteResponse.validateRemoteResponse(api.getCompetitionMatches(id))
+    return if (iNetworkDetector.isConnected())
+      iValidateRemoteResponse.validateRemoteResponse(api.getCompetitionMatches(id))
+    else
+      RemoteResponseState.NoInternetConnect
   }
 }

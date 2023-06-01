@@ -19,7 +19,7 @@ class FetchEPLMatchesUseCase @Inject constructor(
 ) : IFetchEPLMatchesUseCase {
 
   override suspend fun fetchEPLMatches(id: Int): Flow<DataState<Competition>> {
-    return iEPLMatchesRepository.fetchEPLMatches(1).map { remoteState ->
+    return iEPLMatchesRepository.fetchEPLMatches(id).map { remoteState ->
       when (remoteState) {
         is DataState.SuccessState -> {
           remoteState.data.let { competition ->
@@ -33,7 +33,6 @@ class FetchEPLMatchesUseCase @Inject constructor(
             )
           }
         }
-
         is DataState.ErrorState -> DataState.ErrorState(remoteState.errorTypes)
       }
     }

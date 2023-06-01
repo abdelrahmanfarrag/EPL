@@ -1,12 +1,12 @@
 package com.abdelrahman.data.datasource.remote.validateresponse
 
+import com.abdelrahman.data.datasource.remote.Constants
 import com.abdelrahman.data.datasource.remote.Constants.UNAUTHORIZED_ERROR_CODE
 import com.abdelrahman.data.datasource.remote.RemoteResponseState
-import com.abdelrahman.data.datasource.remote.RemoteResponseState.NoInternetConnect
 import com.abdelrahman.data.datasource.remote.RemoteResponseState.NotAuthorized
 import com.abdelrahman.data.datasource.remote.RemoteResponseState.NotValidResponse
 import com.abdelrahman.data.datasource.remote.RemoteResponseState.ValidResponse
-import com.abdelrahman.data.datasource.remote.networkdetector.INetworkDetector
+import com.abdelrahman.models.ErrorResponse
 import com.google.gson.Gson
 import retrofit2.Response
 import javax.inject.Inject
@@ -16,28 +16,34 @@ import javax.inject.Inject
  * Contact: abdelrahmanfarrag291@gmail.com
  * by :ABDELRAHMAN
  */
-@Suppress("UNCHECKED_CAST")
 class ValidateRemoteResponse @Inject constructor(
-  private val mGson: Gson,
-  private val iNetworkDetector: INetworkDetector
+  private val mGson: Gson
 ) : IValidateRemoteResponse {
 
   override fun <T> validateRemoteResponse(response: Response<T>?): RemoteResponseState<T> {
-    return if (!iNetworkDetector.isConnected())
-      NoInternetConnect as RemoteResponseState<T>
-    else {
-      if (response == null)
-        return NotValidResponse as RemoteResponseState<T>
-      else {
-        if (response.isSuccessful) {
-          return ValidResponse(mGson.toJson(response.body()) as T)
-        } else {
-          if (response.code() == UNAUTHORIZED_ERROR_CODE)
-            return NotAuthorized as RemoteResponseState<T>
-          else
-            return NotValidResponse as RemoteResponseState<T>
+    response?.let {
+      it.apply {
+        when (code()) {
+          Constants.SUCCESS_CODE -> {
+            if (isSuccessful) {
+              val model = response.body()
+              return if (model != null)
+                ValidResponse(response = model)
+              else
+                NotValidResponse
+            }
+          }
+          UNAUTHORIZED_ERROR_CODE -> return NotAuthorized
+          else -> return handErrorResponse(response)
         }
       }
+
     }
+    return NotValidResponse
+  }
+
+  private fun <T> handErrorResponse(response: Response<T>): RemoteResponseState<T> {
+    val errorResponse = mGson.fromJson(response.errorBody()?.toString(), ErrorResponse::class.java)
+    return RemoteResponseState.RemoteErrorResponse(errorMessage = errorResponse?.message?:"")
   }
 }

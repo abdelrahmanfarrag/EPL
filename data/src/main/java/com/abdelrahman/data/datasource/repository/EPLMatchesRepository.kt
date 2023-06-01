@@ -30,6 +30,7 @@ class EPLMatchesRepository @Inject constructor(private val iRemoteDataSource: IR
         RemoteResponseState.NotValidResponse -> DataState.ErrorState(GeneralError)
         RemoteResponseState.NotAuthorized -> DataState.ErrorState(UnAuthorized)
         RemoteResponseState.NoInternetConnect -> DataState.ErrorState(NetworkError)
+       is RemoteResponseState.RemoteErrorResponse -> DataState.ErrorState(GeneralError,remoteResponseState.errorMessage)
       }
     }
   }

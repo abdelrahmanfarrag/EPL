@@ -4,6 +4,7 @@ import com.abdelrahman.data.datasource.remote.API
 import com.abdelrahman.data.datasource.remote.RemoteResponseState
 import com.abdelrahman.data.datasource.remote.datasource.apidatasource.IRemoteDataSource
 import com.abdelrahman.data.datasource.remote.datasource.apidatasource.RemoteDataSource
+import com.abdelrahman.data.datasource.remote.networkdetector.INetworkDetector
 import com.abdelrahman.data.datasource.remote.validateresponse.IValidateRemoteResponse
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -23,10 +24,12 @@ class RemoteDataSourceShould {
   private lateinit var mIRemoteDataSource: IRemoteDataSource
   private val mAPI = mock<API>()
   private val mIValidateRemoteResponse = mock<IValidateRemoteResponse>()
+  private val iNetworkDetector = mock<INetworkDetector>()
 
   @Test
   fun `get competition matches called once`() = runTest {
-    mIRemoteDataSource = RemoteDataSource(mIValidateRemoteResponse, mAPI)
+    whenever(iNetworkDetector.isConnected()).thenReturn(true)
+    mIRemoteDataSource = RemoteDataSource(mIValidateRemoteResponse,iNetworkDetector, mAPI)
     mIRemoteDataSource.getCompetitionMatches(1)
     verify(mAPI, times(1)).getCompetitionMatches(1)
   }
@@ -36,7 +39,8 @@ class RemoteDataSourceShould {
     whenever(mIValidateRemoteResponse.validateRemoteResponse(Response.success(Any()))).thenReturn(
       RemoteResponseState.ValidResponse(null)
     )
-    mIRemoteDataSource = RemoteDataSource(mIValidateRemoteResponse, mAPI)
+    whenever(iNetworkDetector.isConnected()).thenReturn(true)
+    mIRemoteDataSource = RemoteDataSource(mIValidateRemoteResponse,iNetworkDetector ,mAPI)
     mIRemoteDataSource.getCompetitionMatches(1)
     verify(mIValidateRemoteResponse, times(1)).validateRemoteResponse<Any>(null)
   }
