@@ -1,4 +1,4 @@
-package com.abdelrahman.domain.repository
+package com.abdelrahman.repository
 
 import com.abdelrahman.DataState
 import com.abdelrahman.models.Competition

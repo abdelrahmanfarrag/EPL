@@ -11,7 +11,7 @@ import com.abdelrahman.data.datasource.remote.interceptors.tokeninterceptor.ITok
 import com.abdelrahman.data.datasource.remote.interceptors.tokeninterceptor.TokenInterceptor
 import com.abdelrahman.data.datasource.remote.validateresponse.IValidateRemoteResponse
 import com.abdelrahman.data.datasource.repository.EPLMatchesRepository
-import com.abdelrahman.domain.repository.IEPLMatchesRepository
+import com.abdelrahman.repository.IEPLMatchesRepository
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides

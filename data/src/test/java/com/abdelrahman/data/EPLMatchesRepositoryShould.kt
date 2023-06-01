@@ -8,7 +8,7 @@ import com.abdelrahman.data.datasource.remote.RemoteResponseState
 import com.abdelrahman.data.datasource.remote.datasource.apidatasource.IRemoteDataSource
 import com.abdelrahman.models.Competition
 import com.abdelrahman.data.datasource.repository.EPLMatchesRepository
-import com.abdelrahman.domain.repository.IEPLMatchesRepository
+import com.abdelrahman.repository.IEPLMatchesRepository
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest

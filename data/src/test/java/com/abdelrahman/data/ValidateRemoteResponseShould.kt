@@ -26,7 +26,7 @@ class ValidateRemoteResponseShould {
   private val iNetworkDetector = mock<INetworkDetector>()
   private val expectedNoNetwork = RemoteResponseState.NoInternetConnect
   private val successResponse = Response.success(null)
-  private val unAuthorizedErrorResponse = Response.error<Any>(401, "Error".toResponseBody())
+  private val unAuthorizedErrorResponse = Response.error<Any>(403, "Error".toResponseBody())
   private val errorResponse = Response.error<Any>(500, "Error".toResponseBody())
 
 
