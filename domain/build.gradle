@@ -42,8 +42,9 @@ dependencies {
   testImplementation "org.mockito.kotlin:mockito-kotlin:4.1.0"
   testImplementation 'org.mockito:mockito-inline:2.21.0'
   testImplementation 'androidx.arch.core:core-testing:2.2.0'
-  implementation "com.squareup.retrofit2:converter-gson:$retrofit"
   testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1'
+  implementation "com.squareup.retrofit2:converter-gson:$retrofit"
+
   //Hilt
   implementation "com.google.dagger:hilt-android:$hilt_version"
   kapt "com.google.dagger:hilt-compiler:$hilt_version"

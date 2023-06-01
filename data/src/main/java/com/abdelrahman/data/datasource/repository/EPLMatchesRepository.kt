@@ -6,7 +6,6 @@ import com.abdelrahman.ErrorTypes.NetworkError
 import com.abdelrahman.ErrorTypes.UnAuthorized
 import com.abdelrahman.data.datasource.remote.RemoteResponseState
 import com.abdelrahman.data.datasource.remote.datasource.apidatasource.IRemoteDataSource
-import com.abdelrahman.models.toListOfMatchEntity
 import com.abdelrahman.repository.IEPLMatchesRepository
 import com.abdelrahman.models.Competition
 import kotlinx.coroutines.flow.Flow
@@ -33,6 +32,5 @@ class EPLMatchesRepository @Inject constructor(private val iRemoteDataSource: IR
         RemoteResponseState.NoInternetConnect -> DataState.ErrorState(NetworkError)
       }
     }
-
   }
 }

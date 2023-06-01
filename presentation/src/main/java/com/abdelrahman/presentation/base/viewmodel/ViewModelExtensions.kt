@@ -4,7 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
  * Authored by Abdelrahman Ahmed on 31 May, 2023.
@@ -13,7 +15,7 @@ import kotlinx.coroutines.launch
  */
 
 fun ViewModel.launch(onErrorHappens: (Throwable) -> Unit, func: suspend CoroutineScope.() -> Unit) {
-  viewModelScope.launch(CoroutineExceptionHandler { _, throwable ->
+  viewModelScope.launch(Dispatchers.IO + CoroutineExceptionHandler { _, throwable ->
     onErrorHappens(throwable)
   }) {
     func()
