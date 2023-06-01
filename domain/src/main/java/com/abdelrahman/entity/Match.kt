@@ -5,10 +5,6 @@ package com.abdelrahman.entity
  * Contact: abdelrahmanfarrag291@gmail.com
  * by :ABDELRAHMAN
  */
-data class Competition(
-  val matches: List<Match>,
-  val matchDays : List<Int>
-) {
   data class Match(
     val awayTeamName: String?,
     val awayTeamScore: Int?,
@@ -16,4 +12,4 @@ data class Competition(
     val homeTeamScore: Int?,
     val matchDay: Int?,
   )
-}
+

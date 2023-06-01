@@ -1,7 +1,6 @@
 package com.abdelrahman.models
 
-
-import com.abdelrahman.entity.Competition.Match
+import com.abdelrahman.entity.Match
 import com.google.gson.annotations.SerializedName
 
 data class Competition(

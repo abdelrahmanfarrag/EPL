@@ -1,11 +1,16 @@
 package com.abdelrahman.presentation.competition
 
 import androidx.lifecycle.viewModelScope
+import com.abdelrahman.DataState
+import com.abdelrahman.entity.Match
 import com.abdelrahman.presentation.base.viewmodel.BaseViewModel
 import com.abdelrahman.presentation.competition.CompetitionContract.Event
 import com.abdelrahman.presentation.competition.CompetitionContract.State
 import com.abdelrahman.usecase.competition.IFetchEPLMatchesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -46,12 +51,12 @@ class CompetitionViewModel @Inject constructor(private val iFetchEPLMatchesUseCa
   }
 
   private fun getMatches() {
-    viewModelScope.launch {
+    viewModelScope.launch(Dispatchers.IO) {
       iFetchEPLMatchesUseCase.fetchEPLMatches(2021).onStart {
         toggleLoading(true)
       }.onCompletion {
         toggleLoading(false)
-      }.collect {
+      }.collectLatest {
         setState {
           copy(
             competitionState = it

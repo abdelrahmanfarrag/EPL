@@ -1,7 +1,7 @@
 package com.abdelrahman.usecase.competition
 
 import com.abdelrahman.DataState
-import com.abdelrahman.entity.Competition
+import com.abdelrahman.entity.Match
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -11,5 +11,5 @@ import kotlinx.coroutines.flow.Flow
  */
 interface IFetchEPLMatchesUseCase {
 
-  suspend fun fetchEPLMatches(id:Int):Flow<DataState<Competition>>
+  suspend fun fetchEPLMatches(id: Int): Flow<DataState<HashMap<Int, List<Match>>>>
 }

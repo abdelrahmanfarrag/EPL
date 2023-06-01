@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.abdelrahman.DataState
+import com.abdelrahman.entity.Match
 import com.abdelrahman.presentation.base.fragment.BaseFragment
 import com.abdelrahman.presentation.base.viewmodel.BaseViewModel
 import com.abdelrahman.presentation.base.viewmodel.UiEffect
@@ -31,8 +34,24 @@ class CompetitionFragment : BaseFragment<FragmentCompetitionBinding>() {
   override val bindingInflater: (LayoutInflater, ViewGroup?, Boolean) -> FragmentCompetitionBinding
     get() = FragmentCompetitionBinding::inflate
 
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    collect()
+  }
+  private fun collect(){
+    lifecycleScope.launchWhenStarted {
+      competitionViewModel.uiState.collect{state->
+        when(state.competitionState){
+          is DataState.SuccessState ->{
+          }
+          else->{}
+        }
+      }
+    }
+  }
   override fun renderState(state: UiState) {
-    Log.d("printState","${(state as State).competitionState}")
+      //val current = ((state as State).competitionState) as DataState.SuccessState<HashMap<Int,List<Match>>>
+  binding.txtsss.text ="${state}"
   }
 
   override fun onErrorHappens(throwable: Throwable) {

@@ -5,6 +5,7 @@ import com.abdelrahman.ErrorTypes
 import com.abdelrahman.ErrorTypes.GeneralError
 import com.abdelrahman.ErrorTypes.NetworkError
 import com.abdelrahman.ErrorTypes.UnAuthorized
+import com.abdelrahman.entity.Match
 import com.abdelrahman.models.Competition
 import com.abdelrahman.repository.IEPLMatchesRepository
 import com.abdelrahman.usecase.competition.FetchEPLMatchesUseCase
@@ -29,10 +30,7 @@ class FetchEPLMatchesUseCaseShould {
   private lateinit var mIFetchEPLMatchesUseCase: IFetchEPLMatchesUseCase
   private val mIEPLMatchesRepository = mock<IEPLMatchesRepository>()
   private val mMockedCompetition = mock<Competition>()
-  private val mStubbedCompetition = com.abdelrahman.entity.Competition(
-    arrayListOf(),
-    arrayListOf()
-  )
+  private val mStubbedCompetition = HashMap<Int,List<Match>>()
 
   @Test
   fun `should call repository once`() = runTest {

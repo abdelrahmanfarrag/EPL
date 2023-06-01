@@ -1,7 +1,7 @@
 package com.abdelrahman.presentation.competition
 
 import com.abdelrahman.DataState
-import com.abdelrahman.entity.Competition
+import com.abdelrahman.entity.Match
 import com.abdelrahman.presentation.base.viewmodel.UiEffect
 import com.abdelrahman.presentation.base.viewmodel.UiEvent
 import com.abdelrahman.presentation.base.viewmodel.UiState
@@ -15,7 +15,7 @@ class CompetitionContract {
 
   data class State(
     val isLoading: Boolean = true,
-    val competitionState : DataState<Competition>?=null
+    val competitionState : DataState<HashMap<Int,List<Match>>>?=null
   ) : UiState
 
   sealed class Event : UiEvent {

@@ -1,11 +1,11 @@
 package com.abdelrahman.usecase.competition
 
 import com.abdelrahman.DataState
-import com.abdelrahman.entity.Competition
+import com.abdelrahman.entity.Match
+import com.abdelrahman.models.Competition
 import com.abdelrahman.models.toListOfMatchEntity
 import com.abdelrahman.repository.IEPLMatchesRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -18,24 +18,37 @@ class FetchEPLMatchesUseCase @Inject constructor(
   private val iEPLMatchesRepository: IEPLMatchesRepository
 ) : IFetchEPLMatchesUseCase {
 
-  override suspend fun fetchEPLMatches(id: Int): Flow<DataState<Competition>> {
+  override suspend fun fetchEPLMatches(id: Int): Flow<DataState<HashMap<Int, List<Match>>>> {
     return iEPLMatchesRepository.fetchEPLMatches(id).map { remoteState ->
       when (remoteState) {
         is DataState.SuccessState -> {
           remoteState.data.let { competition ->
             DataState.SuccessState(
-              Competition(
-                competition.matches.toListOfMatchEntity() ?: arrayListOf(),
-                competition.matches?.map { match ->
-                  match.matchday ?: -1
-                }?.distinct() ?: arrayListOf()
-              )
+              getMatches(competition)
             )
           }
         }
+
         is DataState.ErrorState -> DataState.ErrorState(remoteState.errorTypes)
       }
     }
+  }
 
+  private fun getMatches(competition: Competition): HashMap<Int, List<Match>> {
+    val map = hashMapOf<Int, List<Match>>()
+    val matchEntityList = competition.matches?.toListOfMatchEntity() ?: arrayListOf()
+    for (match in matchEntityList) {
+      val matchDay = match.matchDay ?: -1
+      val listOfMatches = matchEntityList.filter {
+        it.matchDay == matchDay
+      }
+      map[matchDay] = listOfMatches
+    }
+
+    return map.apply {
+      keys.sortedByDescending {
+        it
+      }
+    }
   }
 }
