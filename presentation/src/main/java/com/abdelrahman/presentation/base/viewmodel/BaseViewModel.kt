@@ -49,8 +49,9 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
   }
 
    fun setEvent(event: Event) {
+      val newEvent = event
     launch({ onExceptionThrown() }) {
-      _event.emit(event)
+      _event.emit(newEvent)
     }
   }
 
