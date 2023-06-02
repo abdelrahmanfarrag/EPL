@@ -5,7 +5,8 @@ import com.abdelrahman.ErrorTypes
 import com.abdelrahman.ErrorTypes.GeneralError
 import com.abdelrahman.ErrorTypes.NetworkError
 import com.abdelrahman.ErrorTypes.UnAuthorized
-import com.abdelrahman.entity.Match
+import com.abdelrahman.entity.GroupedMatches
+import com.abdelrahman.entity.MatchDay
 import com.abdelrahman.presentation.competition.CompetitionViewModel
 import com.abdelrahman.usecase.competition.IFetchEPLMatchesUseCase
 import com.abdelrahman.utils.MainDispatcherRule
@@ -35,7 +36,7 @@ class CompetitionViewModelShould {
   val mainDispatcherRule = MainDispatcherRule()
   private lateinit var competitionViewModel: CompetitionViewModel
   private val fetchMatchesUseCase = mock<IFetchEPLMatchesUseCase>()
-  private val mockedCompetition = HashMap<Int,List<Match>>()
+  private val mockedCompetition = HashMap<MatchDay, List<GroupedMatches>>()
 
   @Test
   fun `viewModel call fetch matches once`() = runTest {
@@ -48,7 +49,7 @@ class CompetitionViewModelShould {
   fun `viewModel collect success state when use case returns success`() = runTest {
     mockSuccess()
     withContext(Dispatchers.IO) {
-      Thread.sleep(1800)
+      Thread.sleep(2500)
     }
     assertEquals(
       DataState.SuccessState(mockedCompetition),
@@ -110,7 +111,7 @@ class CompetitionViewModelShould {
   fun `hide loader after data is collected successfully`() = runTest {
     mockSuccess()
     withContext(Dispatchers.IO) {
-      Thread.sleep(1800)
+      Thread.sleep(2500)
     }
     assertEquals(
       false,
@@ -130,6 +131,21 @@ class CompetitionViewModelShould {
     )
   }
 
+  @Test
+  fun `returns server error message in case of error happens`() = runTest {
+    whenever(fetchMatchesUseCase.fetchEPLMatches(2021)).thenReturn(flow {
+      emit(DataState.ServerErrorMessage("Something Went wrong"))
+    })
+    competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
+    withContext(Dispatchers.IO) {
+      Thread.sleep(1800)
+    }
+    assertEquals(
+      DataState.ServerErrorMessage("Something Went wrong"),
+      competitionViewModel.currentState.competitionState
+    )
+  }
+
   private suspend fun mockErrorType(errorTypes: ErrorTypes) {
     whenever(fetchMatchesUseCase.fetchEPLMatches(2021)).thenReturn(flow {
       emit(DataState.ErrorState(errorTypes))
@@ -139,7 +155,11 @@ class CompetitionViewModelShould {
 
   private suspend fun mockSuccess() {
     whenever(fetchMatchesUseCase.fetchEPLMatches(2021)).thenReturn(flow {
-      emit(DataState.SuccessState(mockedCompetition))
+      emit(DataState.SuccessState(mockedCompetition.toSortedMap(
+        compareByDescending {
+          it.day
+        }
+      )))
     })
     competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
   }

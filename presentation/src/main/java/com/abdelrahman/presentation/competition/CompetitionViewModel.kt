@@ -1,19 +1,17 @@
 package com.abdelrahman.presentation.competition
 
-import androidx.lifecycle.viewModelScope
 import com.abdelrahman.DataState
-import com.abdelrahman.entity.Match
+import com.abdelrahman.ErrorTypes.GeneralError
+import com.abdelrahman.ErrorTypes.NetworkError
+import com.abdelrahman.ErrorTypes.UnAuthorized
 import com.abdelrahman.presentation.base.viewmodel.BaseViewModel
+import com.abdelrahman.presentation.competition.CompetitionContract.Effect
 import com.abdelrahman.presentation.competition.CompetitionContract.Event
 import com.abdelrahman.presentation.competition.CompetitionContract.State
 import com.abdelrahman.usecase.competition.IFetchEPLMatchesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
@@ -23,7 +21,7 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class CompetitionViewModel @Inject constructor(private val iFetchEPLMatchesUseCase: IFetchEPLMatchesUseCase) :
-  BaseViewModel<Event, State, CompetitionContract.Effect>() {
+  BaseViewModel<Event, State, Effect>() {
 
   init {
     setEvent(Event.GetMatches)
@@ -33,13 +31,34 @@ class CompetitionViewModel @Inject constructor(private val iFetchEPLMatchesUseCa
     return State()
   }
 
-  override fun onExceptionThrown() {
+  override fun onExceptionThrown(throwable: Throwable) {
+    setEffect { Effect.UnKnownErrorHappens }
   }
 
   override fun handleEvent(event: Event) {
     when (event) {
+      is Event.GameWeekSelected -> getMatchesBasedOnGameWeekSelection(event.gameWeek)
       Event.GetMatches -> getMatches()
     }
+  }
+
+  private fun getMatchesBasedOnGameWeekSelection(gameWeek: Int) {
+    setState {
+      val matches = currentState.matchesMap?.keys?.find {
+        it.day == gameWeek
+      }
+      val updatedMatches = currentState.matchDays?.map {
+        if (it.day == gameWeek) {
+          it.copy(isSelected = true)
+        } else
+          it.copy(isSelected = false)
+      }
+      copy(
+        matchDays = updatedMatches,
+        groupedMatches = currentState.matchesMap?.get(matches)
+      )
+    }
+
   }
 
   private fun toggleLoading(isLoading: Boolean) {
@@ -51,19 +70,52 @@ class CompetitionViewModel @Inject constructor(private val iFetchEPLMatchesUseCa
   }
 
   private fun getMatches() {
-    viewModelScope.launch(Dispatchers.IO) {
+    launchCoroutine {
       iFetchEPLMatchesUseCase.fetchEPLMatches(2021).onStart {
         toggleLoading(true)
       }.onCompletion {
         toggleLoading(false)
-      }.collectLatest {
+      }.collect { matchesState ->
         setState {
           copy(
-            competitionState = it
+            competitionState = matchesState
           )
+        }
+        when (matchesState) {
+          is DataState.SuccessState -> setState {
+            val firstItem = matchesState.data.keys.first()
+            copy(
+              matchDays = matchesState.data.keys.mapIndexed { index, matchDay ->
+                if (index == 0) return@mapIndexed matchDay.copy(isSelected = true)
+                else matchDay
+              },
+              matchesMap = matchesState.data,
+              groupedMatches = matchesState.data[firstItem]
+            )
+          }
+
+          is DataState.ErrorState -> handleErrorState(matchesState)
+          is DataState.ServerErrorMessage -> setEffect {
+            Effect.ServerRespondsWithErrorHappened(matchesState.message)
+          }
         }
       }
     }
   }
 
+  private fun handleErrorState(matchesState: DataState.ErrorState) {
+    when (matchesState.errorTypes) {
+      GeneralError -> setEffect {
+        Effect.UnKnownErrorHappens
+      }
+
+      NetworkError -> setEffect {
+        Effect.NetworkErrorHappened
+      }
+
+      UnAuthorized -> setEffect {
+        Effect.UnAuthorizedErrorHappened
+      }
+    }
+  }
 }

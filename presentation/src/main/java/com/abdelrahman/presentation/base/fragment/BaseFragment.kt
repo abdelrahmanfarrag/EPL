@@ -44,11 +44,21 @@ abstract class BaseFragment<out BINDING : ViewBinding> : Fragment() {
     initViews()
     initClickListeners()
     collectState()
+    collectEffects()
   }
+
   private fun collectState() {
-     lifeCycleStartedScope(mJob, mCoroutineExceptionHandler) {
+    lifeCycleStartedScope(mJob, mCoroutineExceptionHandler) {
       viewModel.uiState.collect { state ->
         renderState(state)
+      }
+    }
+  }
+
+  private fun collectEffects() {
+    lifeCycleStartedScope(mJob, mCoroutineExceptionHandler) {
+      viewModel.effect.collect { effect ->
+        renderEffects(effect)
       }
     }
   }
@@ -61,5 +71,7 @@ abstract class BaseFragment<out BINDING : ViewBinding> : Fragment() {
   open fun initViews() {}
   open fun initClickListeners() {}
   abstract fun renderState(state: UiState)
+  abstract fun renderEffects(effect: UiEffect)
+
   abstract fun onErrorHappens(throwable: Throwable)
 }

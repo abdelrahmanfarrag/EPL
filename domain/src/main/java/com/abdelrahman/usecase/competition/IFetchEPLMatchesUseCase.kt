@@ -1,8 +1,10 @@
 package com.abdelrahman.usecase.competition
 
 import com.abdelrahman.DataState
-import com.abdelrahman.entity.Match
+import com.abdelrahman.entity.GroupedMatches
+import com.abdelrahman.entity.MatchDay
 import kotlinx.coroutines.flow.Flow
+import java.util.SortedMap
 
 /**
  * Authored by Abdelrahman Ahmed on 01 Jun, 2023.
@@ -10,6 +12,5 @@ import kotlinx.coroutines.flow.Flow
  * by :ABDELRAHMAN
  */
 interface IFetchEPLMatchesUseCase {
-
-  suspend fun fetchEPLMatches(id: Int): Flow<DataState<HashMap<Int, List<Match>>>>
+  suspend fun fetchEPLMatches(id: Int): Flow<DataState<SortedMap<MatchDay, List<GroupedMatches>>>>
 }

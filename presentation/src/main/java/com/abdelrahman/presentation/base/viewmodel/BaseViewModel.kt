@@ -1,12 +1,16 @@
 package com.abdelrahman.presentation.base.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 
 /**
  * Authored by Abdelrahman Ahmed on 31 May, 2023.
@@ -22,7 +26,7 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
 
   abstract fun handleEvent(event: Event)
 
-  abstract fun onExceptionThrown()
+  abstract fun onExceptionThrown(throwable: Throwable)
 
   private val _uiState: MutableStateFlow<State> = MutableStateFlow(initialUIState)
   val uiState = _uiState.asStateFlow()
@@ -36,22 +40,32 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
   private val _effect: Channel<Effect> = Channel()
   var effect = _effect.receiveAsFlow()
 
+  protected val coroutineExceptionHandler = CoroutineExceptionHandler { _, throwable ->
+    onExceptionThrown(throwable)
+  }
+
   init {
     subscribeToEvents()
   }
 
   private fun subscribeToEvents() {
-    launch(onErrorHappens = { onExceptionThrown() }) {
+    launchCoroutine {
       event.collect { event ->
         handleEvent(event)
       }
     }
   }
 
-   fun setEvent(event: Event) {
-      val newEvent = event
-    launch({ onExceptionThrown() }) {
+  fun setEvent(event: Event) {
+    val newEvent = event
+    launchCoroutine {
       _event.emit(newEvent)
+    }
+  }
+
+  fun launchCoroutine(block: suspend () -> Unit) {
+    viewModelScope.launch(Dispatchers.IO + coroutineExceptionHandler) {
+      block()
     }
   }
 
@@ -62,7 +76,7 @@ abstract class BaseViewModel<Event : UiEvent, State : UiState, Effect : UiEffect
 
   protected fun setEffect(effect: () -> Effect) {
     val newEffect = effect()
-    launch({ onExceptionThrown() }) {
+    launchCoroutine {
       _effect.send(newEffect)
     }
   }

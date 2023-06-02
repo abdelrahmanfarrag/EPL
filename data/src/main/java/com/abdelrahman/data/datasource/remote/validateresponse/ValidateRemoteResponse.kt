@@ -6,10 +6,11 @@ import com.abdelrahman.data.datasource.remote.RemoteResponseState
 import com.abdelrahman.data.datasource.remote.RemoteResponseState.NotAuthorized
 import com.abdelrahman.data.datasource.remote.RemoteResponseState.NotValidResponse
 import com.abdelrahman.data.datasource.remote.RemoteResponseState.ValidResponse
-import com.abdelrahman.models.ErrorResponse
 import com.google.gson.Gson
+import org.json.JSONObject
 import retrofit2.Response
 import javax.inject.Inject
+
 
 /**
  * Authored by Abdelrahman Ahmed on 31 May, 2023.
@@ -33,6 +34,7 @@ class ValidateRemoteResponse @Inject constructor(
                 NotValidResponse
             }
           }
+
           UNAUTHORIZED_ERROR_CODE -> return NotAuthorized
           else -> return handErrorResponse(response)
         }
@@ -43,7 +45,12 @@ class ValidateRemoteResponse @Inject constructor(
   }
 
   private fun <T> handErrorResponse(response: Response<T>): RemoteResponseState<T> {
-    val errorResponse = mGson.fromJson(response.errorBody()?.toString(), ErrorResponse::class.java)
-    return RemoteResponseState.RemoteErrorResponse(errorMessage = errorResponse?.message?:"")
+    return try {
+      val jObjError = JSONObject(response.errorBody()!!.string())
+      val errorMsg = jObjError.getString("message")
+      RemoteResponseState.RemoteErrorResponse(errorMessage = errorMsg ?: "")
+    } catch (e: Exception) {
+      NotValidResponse
+    }
   }
 }

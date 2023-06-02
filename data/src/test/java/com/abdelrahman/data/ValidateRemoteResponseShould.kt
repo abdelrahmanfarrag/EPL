@@ -52,7 +52,6 @@ class ValidateRemoteResponseShould {
       validateRemoteResponse.validateRemoteResponse(unAuthorizedErrorResponse)
     )
   }
-
   @Test
   fun `return valid response in case of response is success`() {
     validateRemoteResponse = ValidateRemoteResponse(gson)

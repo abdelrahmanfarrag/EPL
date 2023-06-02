@@ -6,8 +6,8 @@ import com.abdelrahman.ErrorTypes.NetworkError
 import com.abdelrahman.ErrorTypes.UnAuthorized
 import com.abdelrahman.data.datasource.remote.RemoteResponseState
 import com.abdelrahman.data.datasource.remote.datasource.apidatasource.IRemoteDataSource
-import com.abdelrahman.repository.IEPLMatchesRepository
 import com.abdelrahman.models.Competition
+import com.abdelrahman.repository.IEPLMatchesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -27,10 +27,13 @@ class EPLMatchesRepository @Inject constructor(private val iRemoteDataSource: IR
     }.map { remoteResponseState ->
       when (remoteResponseState) {
         is RemoteResponseState.ValidResponse -> DataState.SuccessState(remoteResponseState.response)
+        is RemoteResponseState.RemoteErrorResponse -> DataState.ServerErrorMessage(
+          remoteResponseState.errorMessage
+        )
+
         RemoteResponseState.NotValidResponse -> DataState.ErrorState(GeneralError)
         RemoteResponseState.NotAuthorized -> DataState.ErrorState(UnAuthorized)
         RemoteResponseState.NoInternetConnect -> DataState.ErrorState(NetworkError)
-       is RemoteResponseState.RemoteErrorResponse -> DataState.ErrorState(GeneralError,remoteResponseState.errorMessage)
       }
     }
   }

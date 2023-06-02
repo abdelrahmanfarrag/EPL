@@ -6,10 +6,12 @@ package com.abdelrahman.entity
  * by :ABDELRAHMAN
  */
   data class Match(
-    val awayTeamName: String?,
-    val awayTeamScore: Int?,
-    val homeTeamName: String?,
-    val homeTeamScore: Int?,
-    val matchDay: Int?,
-  )
+  val awayTeamName: String?,
+  val awayTeamScore: Int?,
+  val homeTeamName: String?,
+  val homeTeamScore: Int?,
+  val matchDay: Int?,
+  val status: String?,
+  val matchTime: String?
+)
 
