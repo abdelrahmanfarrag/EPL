@@ -1,4 +1,4 @@
-package com.abdelrahman.usecase.insertmatch
+package com.abdelrahman.usecase.updatematches
 
 import com.abdelrahman.entity.Match
 

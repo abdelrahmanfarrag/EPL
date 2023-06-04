@@ -6,5 +6,5 @@ package com.abdelrahman
  * by :ABDELRAHMAN
  */
 enum class ErrorTypes {
-  GeneralError,NetworkError,UnAuthorized
+  GeneralError, NetworkError, UnAuthorized, EmptyList
 }

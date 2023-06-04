@@ -26,4 +26,5 @@
     <item name="android:maxLines">@integer/multiple_lines</item>
     <item name="android:textSize">@dimen/textSizeSmall</item>
   </style>
+
 </resources>

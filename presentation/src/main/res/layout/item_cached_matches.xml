@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_marginBottom="@dimen/space_medium"
+  app:cardBackgroundColor="@color/white"
+  app:cardCornerRadius="@dimen/corner_radius_small"
+  app:cardElevation="@dimen/dimen_1"
+  app:strokeColor="@color/grey">
+
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+      android:id="@+id/txtGameWeek"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/space_small"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="Gameweek 38"
+      style="@style/textRegularBlack" />
+
+    <TextView
+      android:id="@+id/txtDate"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/txtGameWeek"
+      tools:text="28-05-2019"
+      style="@style/textSmallBlack" />
+
+    <TextView
+      android:id="@+id/txtHomeTeamName"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/space_small"
+      app:layout_constraintEnd_toStartOf="@id/txtDate"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/txtDate"
+      tools:text="Arsenal"
+      style="@style/textRegularBlack" />
+
+    <TextView
+      android:id="@+id/txtHomeTeamScore"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginVertical="@dimen/space_small"
+      android:gravity="center"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/txtHomeTeamName"
+      app:layout_constraintStart_toStartOf="@id/txtHomeTeamName"
+      app:layout_constraintTop_toBottomOf="@id/txtHomeTeamName"
+      tools:text="2"
+      style="@style/textSmallBlack" />
+
+    <TextView
+      android:id="@+id/txtAwayTeamName"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/space_small"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/txtDate"
+      app:layout_constraintTop_toBottomOf="@id/txtDate"
+      tools:text="CHELSEA"
+      style="@style/textRegularBlack" />
+
+    <TextView
+      android:id="@+id/txtAwayTeamScore"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginVertical="@dimen/space_small"
+      android:gravity="center"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="@id/txtAwayTeamName"
+      app:layout_constraintStart_toStartOf="@id/txtAwayTeamName"
+      app:layout_constraintTop_toBottomOf="@id/txtAwayTeamName"
+      tools:text="2"
+      style="@style/textSmallBlack" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

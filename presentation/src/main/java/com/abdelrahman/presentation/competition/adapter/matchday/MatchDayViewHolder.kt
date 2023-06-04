@@ -30,7 +30,7 @@ class MatchDayViewHolder(
       else
         txtMatchDay.background =
           ColorDrawable(ResourcesCompat.getColor(itemView.context.resources, R.color.grey, null))
-      txtMatchDay.text = itemView.context.getString(R.string.game_week, t.day.toString())
+      txtMatchDay.text = itemView.context.getString(R.string.week, t.day.toString())
 
     }
   }

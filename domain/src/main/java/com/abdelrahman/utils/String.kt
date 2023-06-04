@@ -1,6 +1,5 @@
 package com.abdelrahman.utils
 
-import android.util.Log
 import com.abdelrahman.utils.DateFormat.UTC
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -21,7 +20,6 @@ fun String?.convertToDesiredDateFormat(inputFormat: String, outputFormat: String
     desiredFormat.timeZone = TimeZone.getDefault()
     desiredFormat.format(date)
   } catch (exception: Exception) {
-    Log.d("printException", "$exception")
     this
   }
 }

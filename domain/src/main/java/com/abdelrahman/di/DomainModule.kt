@@ -2,8 +2,10 @@ package com.abdelrahman.di
 
 import com.abdelrahman.usecase.competition.FetchEPLMatchesUseCase
 import com.abdelrahman.usecase.competition.IFetchEPLMatchesUseCase
-import com.abdelrahman.usecase.insertmatch.IUpdateMatchesUseCase
-import com.abdelrahman.usecase.insertmatch.UpdateMatchesUseCase
+import com.abdelrahman.usecase.getcachedmatches.GetCachedMatchesUseCase
+import com.abdelrahman.usecase.getcachedmatches.IGetCachedMatchesUseCase
+import com.abdelrahman.usecase.updatematches.IUpdateMatchesUseCase
+import com.abdelrahman.usecase.updatematches.UpdateMatchesUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -18,6 +20,10 @@ import dagger.hilt.android.scopes.ViewModelScoped
 @Module
 @InstallIn(ViewModelComponent::class)
 abstract class DomainModule {
+
+  @Binds
+  @ViewModelScoped
+  abstract fun bindsGetCachedMatchesUseCase(cachedMatchesUseCase: GetCachedMatchesUseCase): IGetCachedMatchesUseCase
 
   @Binds
   @ViewModelScoped

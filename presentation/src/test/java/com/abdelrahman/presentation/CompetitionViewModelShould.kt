@@ -9,7 +9,7 @@ import com.abdelrahman.entity.GroupedMatches
 import com.abdelrahman.entity.MatchDay
 import com.abdelrahman.presentation.competition.CompetitionViewModel
 import com.abdelrahman.usecase.competition.IFetchEPLMatchesUseCase
-import com.abdelrahman.usecase.insertmatch.IUpdateMatchesUseCase
+import com.abdelrahman.usecase.updatematches.IUpdateMatchesUseCase
 import com.abdelrahman.utils.MainDispatcherRule
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers

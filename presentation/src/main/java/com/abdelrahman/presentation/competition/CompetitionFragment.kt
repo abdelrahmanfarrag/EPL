@@ -20,8 +20,10 @@ import com.abdelrahman.presentation.competition.adapter.matchday.MatchDayAdapter
 import com.abdelrahman.presentation.competition.adapter.matches.grouped.GroupedMatchesAdapter
 import com.abdelrahman.presentation.databinding.FragmentCompetitionBinding
 import com.abdelrahman.presentation.utils.gone
+import com.abdelrahman.presentation.utils.handleSwipeRefreshWhenScrolling
 import com.abdelrahman.presentation.utils.visible
 import dagger.hilt.android.AndroidEntryPoint
+
 
 /**
  * Authored by Abdelrahman Ahmed on 01 Jun, 2023.
@@ -31,6 +33,10 @@ import dagger.hilt.android.AndroidEntryPoint
 @Suppress("UNCHECKED_CAST")
 @AndroidEntryPoint
 class CompetitionFragment : BaseFragment<FragmentCompetitionBinding>() {
+
+  companion object {
+    fun newInstance() = CompetitionFragment()
+  }
 
   private lateinit var mMatchDayAdapter: MatchDayAdapter
   private lateinit var mGroupedMatchesAdapter: GroupedMatchesAdapter
@@ -80,10 +86,14 @@ class CompetitionFragment : BaseFragment<FragmentCompetitionBinding>() {
     binding.rvMatchDay.apply {
       adapter = mMatchDayAdapter
       itemAnimator = null
+      handleSwipeRefreshWhenScrolling(binding.swiperefresh)
+
     }
     binding.rvMatches.apply {
       adapter = mGroupedMatchesAdapter
       itemAnimator = null
+      handleSwipeRefreshWhenScrolling(binding.swiperefresh)
+
     }
   }
 

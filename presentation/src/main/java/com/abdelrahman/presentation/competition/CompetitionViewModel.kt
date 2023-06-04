@@ -9,8 +9,9 @@ import com.abdelrahman.presentation.base.viewmodel.BaseViewModel
 import com.abdelrahman.presentation.competition.CompetitionContract.Effect
 import com.abdelrahman.presentation.competition.CompetitionContract.Event
 import com.abdelrahman.presentation.competition.CompetitionContract.State
+import com.abdelrahman.presentation.utils.Constants.EPL_COMPETITION_ID
 import com.abdelrahman.usecase.competition.IFetchEPLMatchesUseCase
-import com.abdelrahman.usecase.insertmatch.IUpdateMatchesUseCase
+import com.abdelrahman.usecase.updatematches.IUpdateMatchesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -84,7 +85,7 @@ class CompetitionViewModel @Inject constructor(
 
   private fun getMatches() {
     launchCoroutine {
-      iFetchEPLMatchesUseCase.fetchEPLMatches(2021).onStart {
+      iFetchEPLMatchesUseCase.fetchEPLMatches(EPL_COMPETITION_ID).onStart {
         toggleLoading(true)
       }.onCompletion {
         toggleLoading(false)
@@ -130,6 +131,8 @@ class CompetitionViewModel @Inject constructor(
       UnAuthorized -> setEffect {
         Effect.UnAuthorizedErrorHappened
       }
+
+      else -> {}
     }
   }
 }

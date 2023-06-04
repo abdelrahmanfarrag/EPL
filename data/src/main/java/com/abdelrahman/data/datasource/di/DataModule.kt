@@ -8,7 +8,9 @@ import com.abdelrahman.data.datasource.remote.datasource.apidatasource.RemoteDat
 import com.abdelrahman.data.datasource.remote.networkdetector.INetworkDetector
 import com.abdelrahman.data.datasource.remote.validateresponse.IValidateRemoteResponse
 import com.abdelrahman.data.datasource.remote.validateresponse.ValidateRemoteResponse
+import com.abdelrahman.data.datasource.repository.CachedMatchesRepository
 import com.abdelrahman.data.datasource.repository.EPLMatchesRepository
+import com.abdelrahman.repository.ICachedMatchesRepository
 import com.abdelrahman.repository.IEPLMatchesRepository
 import com.google.gson.Gson
 import dagger.Binds
@@ -60,4 +62,7 @@ abstract class DataModule {
   @ViewModelScoped
   abstract fun bindsLocalDataSource(localDataSource: LocalDataSource): ILocalDataSource
 
+  @Binds
+  @ViewModelScoped
+  abstract fun bindsCachedMatchesRepository(cachedMatchesRepository: CachedMatchesRepository): ICachedMatchesRepository
 }

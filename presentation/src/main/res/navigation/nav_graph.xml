@@ -3,11 +3,22 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:id="@+id/nav_graph"
-  app:startDestination="@id/competitionFragment">
+  app:startDestination="@id/homeFragment">
+
 
   <fragment
     android:id="@+id/competitionFragment"
-    tools:layout="@layout/fragment_competition"
     android:name="com.abdelrahman.presentation.competition.CompetitionFragment"
-    android:label="CompetitionFragment" />
+    android:label="CompetitionFragment"
+    tools:layout="@layout/fragment_competition" />
+  <fragment
+    android:id="@+id/homeFragment"
+    android:name="com.abdelrahman.presentation.home.HomeFragment"
+    android:label="HomeFragment"
+    tools:layout="@layout/fragment_home" />
+  <fragment
+    android:id="@+id/cachedMatchesFragment"
+    android:name="com.abdelrahman.presentation.cachedmatches.CachedMatchesFragment"
+    android:label="CachedMatchesFragment"
+    tools:layout="@layout/item_cached_matches" />
 </navigation>
