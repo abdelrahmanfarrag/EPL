@@ -1,6 +1,7 @@
 package com.abdelrahman.presentation.competition.adapter.matches.grouped
 
 import com.abdelrahman.entity.GroupedMatches
+import com.abdelrahman.entity.Match
 import com.abdelrahman.presentation.base.BaseViewHolder
 import com.abdelrahman.presentation.competition.adapter.matches.MatchesAdapter
 import com.abdelrahman.presentation.databinding.ItemGroupedMatchBinding
@@ -11,13 +12,14 @@ import com.abdelrahman.presentation.databinding.ItemGroupedMatchBinding
  * by :ABDELRAHMAN
  */
 class GroupedMatchesViewHolder(
-  private val itemSingleMatchHolder: ItemGroupedMatchBinding
+  private val itemSingleMatchHolder: ItemGroupedMatchBinding,
+  private val onMatchClickListener: (Match) -> Unit
 ) : BaseViewHolder<GroupedMatches>(itemSingleMatchHolder) {
 
   override fun bind(t: GroupedMatches, isLast: Boolean) {
     itemSingleMatchHolder.apply {
       txtMatchDate.text = t.matchDate
-      val adapter = MatchesAdapter()
+      val adapter = MatchesAdapter(onMatchClickListener)
       rvMatches.adapter = adapter
       adapter.setItems(t.listOfMatches)
     }

@@ -1,6 +1,7 @@
 package com.abdelrahman.repository
 
 import com.abdelrahman.DataState
+import com.abdelrahman.entity.Match
 import com.abdelrahman.models.Competition
 import kotlinx.coroutines.flow.Flow
 
@@ -11,5 +12,6 @@ import kotlinx.coroutines.flow.Flow
  */
 interface IEPLMatchesRepository {
 
-  suspend fun fetchEPLMatches(id:Int): Flow<DataState<Competition>>
+  suspend fun fetchEPLMatches(id: Int): Flow<DataState<Competition>>
+  suspend fun updateMatchesTable(match: Match)
 }

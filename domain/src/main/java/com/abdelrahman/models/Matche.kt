@@ -19,15 +19,16 @@ data class Matche(
   @SerializedName("odds")
     val odds: Odds?,
   @SerializedName("referees")
-    val referees: List<Referee?>?,
+  val referees: List<Referee?>?,
   @SerializedName("score")
-    val score: Score?,
+  val score: Score?,
   @SerializedName("season")
-    val season: Season?,
+  val season: Season?,
   @SerializedName("stage")
-    val stage: String?,
+  val stage: String?,
   @SerializedName("status")
-    val status: String?,
+  val status: String?,
   @SerializedName("utcDate")
-    val utcDate: String?
+  val utcDate: String?,
+  var isFavorite: Boolean = false
 )

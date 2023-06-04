@@ -1,18 +1,17 @@
 package com.abdelrahman.data.datasource.di
 
-import android.content.Context
+import com.abdelrahman.data.datasource.local.datasource.ILocalDataSource
+import com.abdelrahman.data.datasource.local.datasource.LocalDataSource
 import com.abdelrahman.data.datasource.remote.API
 import com.abdelrahman.data.datasource.remote.datasource.apidatasource.IRemoteDataSource
 import com.abdelrahman.data.datasource.remote.datasource.apidatasource.RemoteDataSource
-import com.abdelrahman.data.datasource.remote.validateresponse.ValidateRemoteResponse
 import com.abdelrahman.data.datasource.remote.networkdetector.INetworkDetector
-import com.abdelrahman.data.datasource.remote.networkdetector.NetworkDetectorImpl
-import com.abdelrahman.data.datasource.remote.interceptors.tokeninterceptor.ITokenInterceptor
-import com.abdelrahman.data.datasource.remote.interceptors.tokeninterceptor.TokenInterceptor
 import com.abdelrahman.data.datasource.remote.validateresponse.IValidateRemoteResponse
+import com.abdelrahman.data.datasource.remote.validateresponse.ValidateRemoteResponse
 import com.abdelrahman.data.datasource.repository.EPLMatchesRepository
 import com.abdelrahman.repository.IEPLMatchesRepository
 import com.google.gson.Gson
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,29 +25,39 @@ import dagger.hilt.android.scopes.ViewModelScoped
  */
 @Module
 @InstallIn(ViewModelComponent::class)
-class DataModule {
+abstract class DataModule {
 
-  @Provides
-  @ViewModelScoped
-  fun providesValidateRemoteResponse(
-    gson: Gson
-  ): IValidateRemoteResponse {
-    return ValidateRemoteResponse(gson)
+  companion object {
+    @Provides
+    @ViewModelScoped
+    fun providesValidateRemoteResponse(
+      gson: Gson
+    ): IValidateRemoteResponse {
+      return ValidateRemoteResponse(gson)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun providesRemoteDataSource(
+      api: API,
+      iValidateRemoteResponse: IValidateRemoteResponse,
+      iNetworkDetector: INetworkDetector
+    ): IRemoteDataSource {
+      return RemoteDataSource(iValidateRemoteResponse, iNetworkDetector, api)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideEPLMatchesRepository(
+      iRemoteDataSource: IRemoteDataSource,
+      iLocalDataSource: ILocalDataSource
+    ): IEPLMatchesRepository {
+      return EPLMatchesRepository(iRemoteDataSource, iLocalDataSource)
+    }
   }
 
-  @Provides
+  @Binds
   @ViewModelScoped
-  fun providesRemoteDataSource(
-    api: API,
-    iValidateRemoteResponse: IValidateRemoteResponse,
-    iNetworkDetector: INetworkDetector
-  ): IRemoteDataSource {
-    return RemoteDataSource(iValidateRemoteResponse, iNetworkDetector, api)
-  }
+  abstract fun bindsLocalDataSource(localDataSource: LocalDataSource): ILocalDataSource
 
-  @Provides
-  @ViewModelScoped
-  fun provideEPLMatchesRepository(iRemoteDataSource: IRemoteDataSource): IEPLMatchesRepository {
-    return EPLMatchesRepository(iRemoteDataSource)
-  }
 }

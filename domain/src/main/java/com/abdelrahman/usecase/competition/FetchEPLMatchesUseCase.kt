@@ -26,7 +26,7 @@ class FetchEPLMatchesUseCase @Inject constructor(
         is DataState.SuccessState -> {
           remoteState.data.let { competition ->
             DataState.SuccessState(
-              getMatches(competition)
+              getMatches(competition), remoteState.isOfflineMode
             )
           }
         }
@@ -37,7 +37,7 @@ class FetchEPLMatchesUseCase @Inject constructor(
     }
   }
 
-  private suspend fun getMatches(competition: Competition): SortedMap<MatchDay, List<GroupedMatches>> {
+  private fun getMatches(competition: Competition): SortedMap<MatchDay, List<GroupedMatches>> {
     val map = hashMapOf<MatchDay, List<GroupedMatches>>()
     val matchEntityList = competition.matches?.toListOfMatchEntity() ?: arrayListOf()
     for (match in matchEntityList) {

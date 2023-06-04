@@ -30,7 +30,7 @@ class ValidateRemoteResponseShould {
   fun `return error `() {
     validateRemoteResponse = ValidateRemoteResponse(gson)
     assertEquals(
-      RemoteResponseState.RemoteErrorResponse<ErrorResponse>(""),
+      RemoteResponseState.NotValidResponse,
       validateRemoteResponse.validateRemoteResponse(serverErrorResponse)
     )
   }

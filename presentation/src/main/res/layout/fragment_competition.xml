@@ -1,48 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/swiperefresh"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
-  <androidx.constraintlayout.widget.Group
-    android:id="@+id/grpCompetitionSuccess"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:constraint_referenced_ids="rvMatchDay,rvMatches" />
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+      android:id="@+id/txtOfflineMode"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:background="@color/red"
+      android:padding="@dimen/space_small"
+      android:text="@string/currently_offline"
+      android:visibility="gone"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      style="@style/textSmallWhite" />
 
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rvMatchDay"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:nestedScrollingEnabled="false"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintDimensionRatio="W,1:8"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    tools:itemCount="38"
-    tools:listitem="@layout/item_matchday" />
+    <androidx.constraintlayout.widget.Group
+      android:id="@+id/grpCompetitionSuccess"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:constraint_referenced_ids="rvMatchDay,rvMatches" />
 
-  <androidx.recyclerview.widget.RecyclerView
-    android:id="@+id/rvMatches"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:layout_margin="@dimen/space_medium"
-    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toEndOf="@id/rvMatchDay"
-    app:layout_constraintTop_toTopOf="parent" />
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rvMatchDay"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:nestedScrollingEnabled="false"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintDimensionRatio="W,1:8"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/txtOfflineMode"
+      tools:itemCount="38"
+      tools:listitem="@layout/item_matchday" />
 
-  <include
-    layout="@layout/view_loader"
-    android:id="@+id/layoutProgress"
-    android:visibility="gone" />
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/rvMatches"
+      android:layout_width="0dp"
+      android:layout_height="0dp"
+      android:layout_margin="@dimen/space_medium"
+      app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toEndOf="@id/rvMatchDay"
+      app:layout_constraintTop_toBottomOf="@id/txtOfflineMode" />
 
-  <include
-    layout="@layout/view_error"
-    android:id="@+id/layoutError"
-    android:visibility="gone" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <include
+      layout="@layout/view_loader"
+      android:id="@+id/layoutProgress"
+      android:visibility="gone" />
+
+    <include
+      layout="@layout/view_error"
+      android:id="@+id/layoutError"
+      android:visibility="gone" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

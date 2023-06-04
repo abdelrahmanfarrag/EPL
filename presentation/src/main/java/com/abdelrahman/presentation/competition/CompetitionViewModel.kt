@@ -4,11 +4,13 @@ import com.abdelrahman.DataState
 import com.abdelrahman.ErrorTypes.GeneralError
 import com.abdelrahman.ErrorTypes.NetworkError
 import com.abdelrahman.ErrorTypes.UnAuthorized
+import com.abdelrahman.entity.Match
 import com.abdelrahman.presentation.base.viewmodel.BaseViewModel
 import com.abdelrahman.presentation.competition.CompetitionContract.Effect
 import com.abdelrahman.presentation.competition.CompetitionContract.Event
 import com.abdelrahman.presentation.competition.CompetitionContract.State
 import com.abdelrahman.usecase.competition.IFetchEPLMatchesUseCase
+import com.abdelrahman.usecase.insertmatch.ISavedMatch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -20,7 +22,10 @@ import javax.inject.Inject
  * by :ABDELRAHMAN
  */
 @HiltViewModel
-class CompetitionViewModel @Inject constructor(private val iFetchEPLMatchesUseCase: IFetchEPLMatchesUseCase) :
+class CompetitionViewModel @Inject constructor(
+  private val iFetchEPLMatchesUseCase: IFetchEPLMatchesUseCase,
+  private val iSavedMatch: ISavedMatch
+) :
   BaseViewModel<Event, State, Effect>() {
 
   init {
@@ -38,7 +43,15 @@ class CompetitionViewModel @Inject constructor(private val iFetchEPLMatchesUseCa
   override fun handleEvent(event: Event) {
     when (event) {
       is Event.GameWeekSelected -> getMatchesBasedOnGameWeekSelection(event.gameWeek)
+      is Event.SaveMatch -> saveMatch(event.match)
       Event.GetMatches -> getMatches()
+    }
+  }
+
+  private fun saveMatch(match: Match) {
+    launchCoroutine {
+      iSavedMatch.updateMatchesTable(match)
+      setEvent(Event.GetMatches)
     }
   }
 
@@ -90,7 +103,8 @@ class CompetitionViewModel @Inject constructor(private val iFetchEPLMatchesUseCa
                 else matchDay
               },
               matchesMap = matchesState.data,
-              groupedMatches = matchesState.data[firstItem]
+              groupedMatches = matchesState.data[firstItem],
+              isOfflineMode = matchesState.isOfflineMode
             )
           }
 

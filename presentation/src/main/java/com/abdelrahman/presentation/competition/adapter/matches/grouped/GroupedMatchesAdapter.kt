@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.viewbinding.ViewBinding
 import com.abdelrahman.entity.GroupedMatches
+import com.abdelrahman.entity.Match
 import com.abdelrahman.presentation.base.RecyclerAdapter
 import com.abdelrahman.presentation.databinding.ItemGroupedMatchBinding
 
@@ -13,12 +14,13 @@ import com.abdelrahman.presentation.databinding.ItemGroupedMatchBinding
  * Contact: abdelrahmanfarrag291@gmail.com
  * by :ABDELRAHMAN
  */
-class GroupedMatchesAdapter : RecyclerAdapter<GroupedMatches, GroupedMatchesViewHolder>() {
+class GroupedMatchesAdapter(private val onMatchClickListener: (Match) -> Unit) :
+  RecyclerAdapter<GroupedMatches, GroupedMatchesViewHolder>() {
 
   override fun instantiateViewHolder(
     itemView: ViewBinding,
     viewType: Int
-  ) = GroupedMatchesViewHolder(itemView as ItemGroupedMatchBinding)
+  ) = GroupedMatchesViewHolder(itemView as ItemGroupedMatchBinding, onMatchClickListener)
 
   override fun generateAsyncDifferCallback(): ItemCallback<GroupedMatches> {
 

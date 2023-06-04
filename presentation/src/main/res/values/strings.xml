@@ -3,6 +3,7 @@
   <string name="try_again">Try again</string>
   <string name="something_went_wrong">Something went wrong </string>
   <string name="game_week">Week %s</string>
+  <string name="currently_offline">You currently on offline mode\n turn you connection on and pull to refresh to update your matches.</string>
   <string name="you_are_not_authorized">You are not authorized to view the action.</string>
   <string name="internet_connection">There is not any internet connection available\nPlease try again when you connection is stable.</string>
 </resources>

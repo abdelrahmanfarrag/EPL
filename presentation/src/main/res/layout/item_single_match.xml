@@ -12,17 +12,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-      android:id="@+id/txtHomeTeamName"
-      android:layout_width="0dp"
+    <ImageView
+      android:id="@+id/imgFavorite"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginHorizontal="@dimen/space_large"
-      android:layout_marginTop="@dimen/space_small"
-      app:layout_constraintEnd_toStartOf="@+id/txtHomeTeamScore"
-      app:layout_constraintStart_toStartOf="parent"
+      android:layout_marginEnd="@dimen/space_medium"
+      android:contentDescription="@null"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      tools:text="Arsenal FC"
-      style="@style/textSmallBlack" />
+      app:srcCompat="@drawable/ic_not_favorite" />
 
     <TextView
       android:id="@+id/txtAwayTeamName"
@@ -39,9 +38,9 @@
       android:id="@+id/txtHomeTeamScore"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginEnd="@dimen/space_large"
+      android:layout_marginEnd="@dimen/space_x_small"
       app:layout_constraintBottom_toBottomOf="@id/txtHomeTeamName"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/imgFavorite"
       app:layout_constraintTop_toTopOf="@id/txtHomeTeamName"
       tools:text="2"
       style="@style/textSmallBlack" />
@@ -63,9 +62,22 @@
       android:layout_height="wrap_content"
       android:layout_marginEnd="@dimen/space_small"
       app:layout_constraintBottom_toBottomOf="@id/txtAwayTeamName"
-      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/imgFavorite"
       app:layout_constraintTop_toTopOf="@id/txtHomeTeamName"
       tools:text="14:00"
+      style="@style/textSmallBlack" />
+
+
+    <TextView
+      android:id="@+id/txtHomeTeamName"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="@dimen/space_large"
+      android:layout_marginTop="@dimen/space_small"
+      app:layout_constraintEnd_toStartOf="@+id/txtHomeTeamScore"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      tools:text="Arsenal FC"
       style="@style/textSmallBlack" />
 
     <androidx.constraintlayout.widget.Group

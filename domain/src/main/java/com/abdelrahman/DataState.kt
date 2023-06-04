@@ -6,7 +6,7 @@ package com.abdelrahman
  * by :ABDELRAHMAN
  */
 sealed class DataState<out T> {
-  data class SuccessState<T>(val data: T) : DataState<T>()
+  data class SuccessState<T>(val data: T, val isOfflineMode: Boolean = false) : DataState<T>()
   data class ErrorState(val errorTypes: ErrorTypes) : DataState<Nothing>()
   data class ServerErrorMessage(val message: String? = null) : DataState<Nothing>()
 }

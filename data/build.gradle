@@ -3,7 +3,6 @@ plugins {
   id 'org.jetbrains.kotlin.android'
   id 'kotlin-kapt'
   id 'com.google.dagger.hilt.android'
-
 }
 
 android {
@@ -25,7 +24,6 @@ android {
     }
   }
 
-
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
@@ -40,24 +38,26 @@ dependencies {
   implementation "com.squareup.retrofit2:retrofit:$retrofit"
   implementation "com.squareup.retrofit2:converter-gson:$retrofit"
   //http
-  implementation"com.squareup.okhttp3:logging-interceptor:$okhttp_interceptor"
+  implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_interceptor"
   //room
+  implementation "androidx.room:room-ktx:$room_version"
   implementation "androidx.room:room-runtime:$room_version"
   annotationProcessor "androidx.room:room-compiler:$room_version"
   kapt "androidx.room:room-compiler:$room_version"
+  kapt "androidx.room:room-ktx:$room_version"
+
 
   //Testing
   testImplementation "junit:junit:$junit"
   androidTestImplementation "androidx.test.ext:junit:$junit_test"
   androidTestImplementation "androidx.test.espresso:espresso-core:$esspresso"
-  testImplementation "org.mockito.kotlin:mockito-kotlin:4.1.0"
-  testImplementation 'org.mockito:mockito-inline:2.21.0'
-  testImplementation 'androidx.arch.core:core-testing:2.2.0'
-  testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1'
+  testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_kotlin"
+  testImplementation "org.mockito:mockito-inline:$mockito_inline"
+  testImplementation "androidx.arch.core:core-testing:$core_testing"
+  testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test"
   //Hilt
   implementation "com.google.dagger:hilt-android:$hilt_version"
   kapt "com.google.dagger:hilt-compiler:$hilt_version"
-
 
   implementation project(':domain')
 }

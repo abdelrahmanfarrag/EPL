@@ -2,6 +2,7 @@ package com.abdelrahman.presentation.competition
 
 import com.abdelrahman.DataState
 import com.abdelrahman.entity.GroupedMatches
+import com.abdelrahman.entity.Match
 import com.abdelrahman.entity.MatchDay
 import com.abdelrahman.presentation.base.viewmodel.UiEffect
 import com.abdelrahman.presentation.base.viewmodel.UiEvent
@@ -20,12 +21,14 @@ class CompetitionContract {
     val competitionState: DataState<SortedMap<MatchDay, List<GroupedMatches>>>? = null,
     val matchesMap: SortedMap<MatchDay, List<GroupedMatches>>? = null,
     val matchDays: List<MatchDay>? = null,
-    val groupedMatches: List<GroupedMatches>? = null
+    val groupedMatches: List<GroupedMatches>? = null,
+    val isOfflineMode: Boolean = false
   ) : UiState
 
   sealed class Event : UiEvent {
     object GetMatches : Event()
     data class GameWeekSelected(val gameWeek: Int) : Event()
+    data class SaveMatch(val match: Match) : Event()
   }
 
   sealed class Effect : UiEffect {

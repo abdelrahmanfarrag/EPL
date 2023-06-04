@@ -13,12 +13,13 @@ import com.abdelrahman.presentation.databinding.ItemSingleMatchBinding
  * Contact: abdelrahmanfarrag291@gmail.com
  * by :ABDELRAHMAN
  */
-class MatchesAdapter : RecyclerAdapter<Match, MatchesViewHolder>() {
+class MatchesAdapter(private val onMatchClickListener: (Match) -> Unit) :
+  RecyclerAdapter<Match, MatchesViewHolder>() {
 
   override fun instantiateViewHolder(
     itemView: ViewBinding,
     viewType: Int
-  ) = MatchesViewHolder(itemView as ItemSingleMatchBinding)
+  ) = MatchesViewHolder(itemView as ItemSingleMatchBinding, onMatchClickListener)
 
   override fun generateAsyncDifferCallback(): ItemCallback<Match> {
 

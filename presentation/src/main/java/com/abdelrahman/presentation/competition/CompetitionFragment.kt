@@ -52,6 +52,14 @@ class CompetitionFragment : BaseFragment<FragmentCompetitionBinding>() {
     val groupedMatches = competitionFragmentState.groupedMatches
     bindMatchDayAdapter(matchDays)
     bindGroupedMatches(groupedMatches)
+    isOfflineMode(competitionFragmentState.isOfflineMode)
+  }
+
+  private fun isOfflineMode(isOffline: Boolean) {
+    if (isOffline)
+      binding.txtOfflineMode.visible()
+    else
+      binding.txtOfflineMode.gone()
   }
 
   private fun bindGroupedMatches(groupedMatches: List<GroupedMatches>?) {
@@ -62,7 +70,9 @@ class CompetitionFragment : BaseFragment<FragmentCompetitionBinding>() {
 
   private fun initAdapters() {
     mMatchDayAdapter = MatchDayAdapter()
-    mGroupedMatchesAdapter = GroupedMatchesAdapter()
+    mGroupedMatchesAdapter = GroupedMatchesAdapter { match ->
+      viewModel.setEvent(Event.SaveMatch(match))
+    }
 
     mMatchDayAdapter.setOnItemClicked { gameWeek ->
       viewModel.setEvent(Event.GameWeekSelected(gameWeek))
@@ -88,6 +98,7 @@ class CompetitionFragment : BaseFragment<FragmentCompetitionBinding>() {
 
   override fun initClickListeners() {
     onRetryClickListener()
+    onSwipeToRefresh()
   }
 
   private fun onRetryClickListener() {
@@ -109,10 +120,15 @@ class CompetitionFragment : BaseFragment<FragmentCompetitionBinding>() {
   }
 
   private fun bindLoading(isLoading: Boolean) {
+    binding.swiperefresh.isRefreshing = false
     if (isLoading)
       binding.layoutProgress.viewProgress.visible()
     else
       binding.layoutProgress.viewProgress.gone()
+  }
+
+  private fun onSwipeToRefresh() {
+    binding.swiperefresh.setOnRefreshListener { viewModel.setEvent(Event.GetMatches) }
   }
 
   private fun collectErrorEffects(message: String?) {

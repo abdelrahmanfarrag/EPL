@@ -39,10 +39,10 @@ dependencies {
   testImplementation "junit:junit:$junit"
   androidTestImplementation "androidx.test.ext:junit:$junit_test"
   androidTestImplementation "androidx.test.espresso:espresso-core:$esspresso"
-  testImplementation "org.mockito.kotlin:mockito-kotlin:4.1.0"
-  testImplementation 'org.mockito:mockito-inline:2.21.0'
-  testImplementation 'androidx.arch.core:core-testing:2.2.0'
-  testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1'
+  testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_kotlin"
+  testImplementation "org.mockito:mockito-inline:$mockito_inline"
+  testImplementation "androidx.arch.core:core-testing:$core_testing"
+  testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test"
   implementation "com.squareup.retrofit2:converter-gson:$retrofit"
 
   //Hilt

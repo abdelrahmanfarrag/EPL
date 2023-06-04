@@ -2,7 +2,9 @@ package com.abdelrahman.data.datasource.di
 
 import android.content.Context
 import android.util.Log
+import androidx.room.Room
 import com.abdelrahman.data.BuildConfig
+import com.abdelrahman.data.datasource.local.database.MatchDatabase
 import com.abdelrahman.data.datasource.remote.API
 import com.abdelrahman.data.datasource.remote.Constants.URLS.BASE_URL
 import com.abdelrahman.data.datasource.remote.interceptors.tokeninterceptor.ITokenInterceptor
@@ -14,7 +16,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.android.scopes.ViewModelScoped
 import dagger.hilt.components.SingletonComponent
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
@@ -41,9 +42,16 @@ class AppModule {
 
   @Provides
   @Singleton
+  fun providesRoomDataBase(@ApplicationContext context: Context): MatchDatabase {
+    return Room.databaseBuilder(context, MatchDatabase::class.java, "Match.db").build()
+  }
+
+  @Provides
+  @Singleton
   fun providesINetworkDetector(@ApplicationContext context: Context): INetworkDetector {
     return NetworkDetectorImpl(context)
   }
+
   @Provides
   @Singleton
   fun providesGson(): Gson {

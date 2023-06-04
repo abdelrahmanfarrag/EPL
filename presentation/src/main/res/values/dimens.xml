@@ -3,6 +3,7 @@
   <dimen name="dimen_1">1dp</dimen>
   <dimen name="progress_size">48dp</dimen>
   <dimen name="error_image_size">48dp</dimen>
+  <dimen name="favorite_image_size">24dp</dimen>
 
   <dimen name="textSizeSmall">12sp</dimen>
   <dimen name="textSizeRegular">16sp</dimen>
@@ -20,5 +21,7 @@
   <dimen name="corner_radius_medium">12dp</dimen>
   <dimen name="corner_radius_large">16dp</dimen>
 
-  <integer name="max_lines">1</integer>
+  <integer name="single_line">1</integer>
+  <integer name="multiple_lines">100</integer>
+
 </resources>

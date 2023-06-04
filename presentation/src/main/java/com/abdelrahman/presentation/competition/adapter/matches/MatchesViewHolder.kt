@@ -1,6 +1,8 @@
 package com.abdelrahman.presentation.competition.adapter.matches
 
+import androidx.core.content.res.ResourcesCompat
 import com.abdelrahman.entity.Match
+import com.abdelrahman.presentation.R
 import com.abdelrahman.presentation.base.BaseViewHolder
 import com.abdelrahman.presentation.databinding.ItemSingleMatchBinding
 
@@ -10,7 +12,8 @@ import com.abdelrahman.presentation.databinding.ItemSingleMatchBinding
  * by :ABDELRAHMAN
  */
 class MatchesViewHolder(
-  private val itemSingleMatchHolder: ItemSingleMatchBinding
+  private val itemSingleMatchHolder: ItemSingleMatchBinding,
+  private val onMatchClickListener: (Match) -> Unit
 ) : BaseViewHolder<Match>(itemSingleMatchHolder) {
 
   override fun bind(t: Match, isLast: Boolean) {
@@ -19,6 +22,15 @@ class MatchesViewHolder(
       txtAwayTeamScore.text = t.awayTeamScore.toString()
       txtHomeTeamName.text = t.homeTeamName
       txtHomeTeamScore.text = t.homeTeamScore.toString()
+      imgFavorite.setOnClickListener {
+        onMatchClickListener.invoke(t)
+      }
+      if (t.isFavorite)
+        imgFavorite.background =
+          ResourcesCompat.getDrawable(itemView.context.resources, R.drawable.ic_favortied, null)
+      else
+        ResourcesCompat.getDrawable(itemView.context.resources, R.drawable.ic_not_favorite, null)
+
     }
   }
 }
