@@ -39,11 +39,17 @@ class CachedMatchesViewModel @Inject constructor(private val iGetCachedMatchesUs
       iGetCachedMatchesUseCase.getAllSavedMatches().collect { dataState ->
         when (dataState) {
           is DataState.SuccessState -> setState {
-            copy(matches = dataState.data)
+            copy(
+              matches = dataState.data,
+              isError = false
+            )
           }
 
           else -> setState {
-            copy(isError = true)
+            copy(
+              isError = true,
+              matches = null
+            )
           }
         }
       }

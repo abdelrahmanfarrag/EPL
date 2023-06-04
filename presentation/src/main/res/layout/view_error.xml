@@ -20,7 +20,7 @@
     app:layout_constraintTop_toTopOf="parent"
     app:layout_constraintVertical_bias=".4"
     tools:drawableTop="@drawable/ic_error"
-    style="@style/textRegularBlack" />
+    style="@style/textRegularBlackWithMultiLines" />
 
   <com.google.android.material.button.MaterialButton
     android:id="@+id/btnTryAgain"

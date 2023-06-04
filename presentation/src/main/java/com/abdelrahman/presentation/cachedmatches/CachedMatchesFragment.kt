@@ -59,8 +59,9 @@ class CachedMatchesFragment : BaseFragment<FragmentCachedMatchesBinding>() {
     val cachedMatchState = state as State
     if (!cachedMatchState.matches.isNullOrEmpty())
       submitList(cachedMatchState.matches)
-    if (cachedMatchState.isError)
-      onNoItemsFound()
+    else
+      if (cachedMatchState.isError)
+        onNoItemsFound()
   }
 
   private fun submitList(matches: List<Match>) {
