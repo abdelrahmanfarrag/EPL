@@ -29,6 +29,10 @@ fun List<Matche>?.toListOfMatchEntity() = this?.map {
       DateFormat.USER_FRIENDLY_FORMAT
     ),
     it.id,
+    it.utcDate.convertToDesiredDateFormat(
+      DateFormat.SERVER_DATE_FORMAT,
+      DateFormat.HH_MM_FORMAT
+    ),
     it.isFavorite
   )
 }

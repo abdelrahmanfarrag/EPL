@@ -7,4 +7,5 @@ package com.abdelrahman.presentation.utils
  */
 object Constants {
   const val EPL_COMPETITION_ID = 2021
+  const val STATUS_FINISHED = "FINISHED"
 }

@@ -12,7 +12,8 @@ package com.abdelrahman.entity
   val homeTeamScore: Int?,
   val matchDay: Int?,
   val status: String?,
-  val matchTime: String?,
+  val matchDate: String?,
   val matchId: Int?,
+  val matchTime: String?,
   val isFavorite: Boolean
 )

@@ -45,7 +45,7 @@ class FetchEPLMatchesUseCase @Inject constructor(
       val listOfMatches = matchEntityList.filter {
         it.matchDay == matchDay.day
       }.groupBy {
-        it.matchTime
+        it.matchDate
       }.map {
         GroupedMatches(it.key ?: "-", it.value)
       }

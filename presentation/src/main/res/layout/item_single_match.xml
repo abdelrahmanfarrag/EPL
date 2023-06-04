@@ -25,10 +25,12 @@
 
     <TextView
       android:id="@+id/txtAwayTeamName"
-      android:layout_width="wrap_content"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginVertical="@dimen/space_small"
+      android:layout_marginEnd="@dimen/space_large"
       app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@+id/txtAwayTeamScore"
       app:layout_constraintStart_toStartOf="@id/txtHomeTeamName"
       app:layout_constraintTop_toBottomOf="@id/txtHomeTeamName"
       tools:text="Chelsea"

@@ -10,4 +10,5 @@ object DateFormat {
   const val UTC = "UTC"
   const val SERVER_DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
   const val USER_FRIENDLY_FORMAT = "yyyy-MMM-dd"
+  const val HH_MM_FORMAT = "HH:mm"
 }

@@ -24,4 +24,6 @@
   <integer name="single_line">1</integer>
   <integer name="multiple_lines">100</integer>
 
+  <item format="float" name="constrain_ratio" type="dimen">.1</item>
+
 </resources>

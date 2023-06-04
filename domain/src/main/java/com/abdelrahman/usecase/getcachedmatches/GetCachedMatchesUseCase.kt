@@ -19,7 +19,7 @@ class GetCachedMatchesUseCase @Inject constructor(private val iCachedMatchesRepo
     return iCachedMatchesRepository.getAllSavedMatches().map { state ->
       return@map if (state is DataState.SuccessState)
         state.copy(
-          data = state.data.sortedBy { it.matchDay }
+          data = state.data.sortedByDescending { it.matchDay }
         )
       else
         state

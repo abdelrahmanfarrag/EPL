@@ -23,7 +23,7 @@ class LocalDataSource @Inject constructor(private val mMatchDatabase: MatchDatab
         awayTeamScore = match.awayTeamScore,
         matchId = match.matchId,
         status = match.status,
-        matchTime = match.matchTime,
+        matchTime = match.matchDate,
         matchDay = match.matchDay
       )
     )

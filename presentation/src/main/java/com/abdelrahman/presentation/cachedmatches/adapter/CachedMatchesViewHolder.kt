@@ -21,7 +21,7 @@ class CachedMatchesViewHolder(private val itemCachedMatchesBinding: ItemCachedMa
       txtHomeTeamScore.text = t.homeTeamScore.toString()
       txtGameWeek.text =
         this.txtGameWeek.context.getString(R.string.game_week, t.matchDay.toString())
-      txtDate.text = t.matchTime
+      txtDate.text = t.matchDate
     }
   }
 }
