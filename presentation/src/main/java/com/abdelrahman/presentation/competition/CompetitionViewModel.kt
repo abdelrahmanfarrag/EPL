@@ -10,7 +10,7 @@ import com.abdelrahman.presentation.competition.CompetitionContract.Effect
 import com.abdelrahman.presentation.competition.CompetitionContract.Event
 import com.abdelrahman.presentation.competition.CompetitionContract.State
 import com.abdelrahman.usecase.competition.IFetchEPLMatchesUseCase
-import com.abdelrahman.usecase.insertmatch.ISavedMatch
+import com.abdelrahman.usecase.insertmatch.IUpdateMatchesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
@@ -24,7 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CompetitionViewModel @Inject constructor(
   private val iFetchEPLMatchesUseCase: IFetchEPLMatchesUseCase,
-  private val iSavedMatch: ISavedMatch
+  private val iUpdateMatchesUseCase: IUpdateMatchesUseCase
 ) :
   BaseViewModel<Event, State, Effect>() {
 
@@ -50,7 +50,7 @@ class CompetitionViewModel @Inject constructor(
 
   private fun saveMatch(match: Match) {
     launchCoroutine {
-      iSavedMatch.updateMatchesTable(match)
+      iUpdateMatchesUseCase.updateMatchesTable(match)
       setEvent(Event.GetMatches)
     }
   }

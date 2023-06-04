@@ -9,6 +9,7 @@ import com.abdelrahman.entity.GroupedMatches
 import com.abdelrahman.entity.MatchDay
 import com.abdelrahman.presentation.competition.CompetitionViewModel
 import com.abdelrahman.usecase.competition.IFetchEPLMatchesUseCase
+import com.abdelrahman.usecase.insertmatch.IUpdateMatchesUseCase
 import com.abdelrahman.utils.MainDispatcherRule
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
@@ -29,12 +30,14 @@ import org.mockito.kotlin.whenever
  * Contact: abdelrahmanfarrag291@gmail.com
  * by :ABDELRAHMAN
  */
+@OptIn(ExperimentalCoroutinesApi::class)
 class CompetitionViewModelShould {
 
   @OptIn(ExperimentalCoroutinesApi::class)
   @get:Rule
   val mainDispatcherRule = MainDispatcherRule()
   private lateinit var competitionViewModel: CompetitionViewModel
+  private val iSaveMatch = mock<IUpdateMatchesUseCase>()
   private val fetchMatchesUseCase = mock<IFetchEPLMatchesUseCase>()
   private val mockedCompetition = HashMap<MatchDay, List<GroupedMatches>>()
 
@@ -74,7 +77,7 @@ class CompetitionViewModelShould {
   fun `viewModel collect network error state when use case returns no network error state`() =
     runTest {
       mockErrorType(NetworkError)
-      competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
+      competitionViewModel = CompetitionViewModel(fetchMatchesUseCase, iSaveMatch)
       withContext(Dispatchers.IO) {
         Thread.sleep(1800)
       }
@@ -136,7 +139,7 @@ class CompetitionViewModelShould {
     whenever(fetchMatchesUseCase.fetchEPLMatches(2021)).thenReturn(flow {
       emit(DataState.ServerErrorMessage("Something Went wrong"))
     })
-    competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
+    competitionViewModel = CompetitionViewModel(fetchMatchesUseCase, iSaveMatch)
     withContext(Dispatchers.IO) {
       Thread.sleep(1800)
     }
@@ -150,7 +153,7 @@ class CompetitionViewModelShould {
     whenever(fetchMatchesUseCase.fetchEPLMatches(2021)).thenReturn(flow {
       emit(DataState.ErrorState(errorTypes))
     })
-    competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
+    competitionViewModel = CompetitionViewModel(fetchMatchesUseCase, iSaveMatch)
   }
 
   private suspend fun mockSuccess() {
@@ -161,7 +164,7 @@ class CompetitionViewModelShould {
         }
       )))
     })
-    competitionViewModel = CompetitionViewModel(fetchMatchesUseCase)
+    competitionViewModel = CompetitionViewModel(fetchMatchesUseCase, iSaveMatch)
   }
 
 }

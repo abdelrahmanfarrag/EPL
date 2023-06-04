@@ -9,8 +9,8 @@ import javax.inject.Inject
  * Contact: abdelrahmanfarrag291@gmail.com
  * by :ABDELRAHMAN
  */
-class SaveMatch @Inject constructor(private val iEPLMatchesRepository: IEPLMatchesRepository) :
-  ISavedMatch {
+class UpdateMatchesUseCase @Inject constructor(private val iEPLMatchesRepository: IEPLMatchesRepository) :
+  IUpdateMatchesUseCase {
 
   override suspend fun updateMatchesTable(match: Match) {
     iEPLMatchesRepository.updateMatchesTable(match)

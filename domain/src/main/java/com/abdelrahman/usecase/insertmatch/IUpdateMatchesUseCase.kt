@@ -7,6 +7,6 @@ import com.abdelrahman.entity.Match
  * Contact: abdelrahmanfarrag291@gmail.com
  * by :ABDELRAHMAN
  */
-interface ISavedMatch {
+interface IUpdateMatchesUseCase {
   suspend fun updateMatchesTable(match: Match)
 }

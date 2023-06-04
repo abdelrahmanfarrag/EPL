@@ -2,8 +2,8 @@ package com.abdelrahman.di
 
 import com.abdelrahman.usecase.competition.FetchEPLMatchesUseCase
 import com.abdelrahman.usecase.competition.IFetchEPLMatchesUseCase
-import com.abdelrahman.usecase.insertmatch.ISavedMatch
-import com.abdelrahman.usecase.insertmatch.SaveMatch
+import com.abdelrahman.usecase.insertmatch.IUpdateMatchesUseCase
+import com.abdelrahman.usecase.insertmatch.UpdateMatchesUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -21,7 +21,7 @@ abstract class DomainModule {
 
   @Binds
   @ViewModelScoped
-  abstract fun bindsSavedMatchesUseCase(saveMatch: SaveMatch): ISavedMatch
+  abstract fun bindsSavedMatchesUseCase(updateMatchesUseCase: UpdateMatchesUseCase): IUpdateMatchesUseCase
 
   @Binds
   @ViewModelScoped
